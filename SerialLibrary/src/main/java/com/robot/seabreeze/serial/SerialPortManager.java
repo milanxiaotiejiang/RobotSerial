@@ -32,6 +32,8 @@ public class SerialPortManager extends SerialPort {
     private Handler mSendingHandler;
     private SerialPortReadThread mSerialPortReadThread;
 
+    private String tag;
+
     /**
      * 打开串口
      *
@@ -218,4 +220,12 @@ public class SerialPortManager extends SerialPort {
         return false;
     }
 
+    public String getTag() {
+        return tag;
+    }
+
+    public SerialPortManager setTag(String tag) {
+        this.tag = tag;
+        return this;
+    }
 }
