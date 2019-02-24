@@ -6,7 +6,7 @@ import com.robot.seabreeze.serial.listener.ReceivedListener;
 /**
  * Author: MiLan
  * Date: 2019/2/25
- * Description:
+ * Description: 回调
  */
 public abstract class ReceiveData implements ReceivedListener {
     @Override

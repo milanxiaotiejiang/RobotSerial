@@ -40,7 +40,6 @@ public interface ReceivedListener {
         }
     };
 
-
     void onActionReceived(String info);
 
     void onVoiceReceived(String info);

@@ -45,7 +45,6 @@ public class HexUtils {
         }
         try {
             s = new String(baKeyword, "UTF-8");
-            new String();
         } catch (Exception e1) {
             e1.printStackTrace();
         }
