@@ -26,7 +26,7 @@ public class App extends Application {
                 .formatDeliveryVoice(Format.Delivery.DEFAULT)
                 .formatReceiveVoice(Format.Receive.BYTETOHEX)
                 .formatDeliveryCruise(Format.Delivery.HEXTOBYTE)
-                .formatReceiveconfigCruise(Format.Receive.DEFAULT)
+                .formatReceiveCruise(Format.Receive.DEFAULT)
                 .build();
         SerialControl.getInstance().startManager(config);
     }

@@ -401,7 +401,7 @@ public class SerialConfig implements OnOpenSerialPortListener, OnSerialPortDataL
             return this;
         }
 
-        public Builder formatReceiveconfigCruise(Format.Receive receive) {
+        public Builder formatReceiveCruise(Format.Receive receive) {
             receiveCruise = receive;
             return this;
         }
