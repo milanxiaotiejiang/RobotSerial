@@ -14,9 +14,9 @@ public @interface Format {
     }
 
     @interface Receive {
-        int DEFAULT = 0;
-        int BYTETOHEX = 1;
-        int CUSTOM = 2;
+        int DEFAULT = 4;
+        int BYTETOHEX = 5;
+        int CUSTOM = 6;
     }
 
 }

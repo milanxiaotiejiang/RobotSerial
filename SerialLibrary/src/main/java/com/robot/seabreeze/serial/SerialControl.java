@@ -46,9 +46,9 @@ public class SerialControl {
                 .formatDeliveryAction(SerialPreferences.getDeliveryActionPre())
                 .formatDeliveryVoice(SerialPreferences.getDeliveryVoicePre())
                 .formatDeliveryCruise(SerialPreferences.getDeliveryCruisePre())
-                .formatReceiveAction(Format.Receive.BYTETOHEX)
-                .formatReceiveVoice(Format.Receive.DEFAULT)
-                .formatReceiveCruise(Format.Receive.DEFAULT)
+                .formatReceiveAction(SerialPreferences.getReceiveActionPre())
+                .formatReceiveVoice(SerialPreferences.getReceiveVoicePre())
+                .formatReceiveCruise(SerialPreferences.getReceiveCruisePre())
                 .build();
         mConfig.initManager();
     }

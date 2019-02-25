@@ -97,6 +97,15 @@ public class SerialPortSettingFragment extends Fragment {
                 SerialPreferences.setDeliveryActionPre(isChecked ? Format.Delivery.HEXTOBYTE : Format.Delivery.DEFAULT);
             }
         });
+        QMUICommonListItemView actionReceivedSwitchItem = mGroupListView.createItemView("Hex接受");
+        actionReceivedSwitchItem.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_SWITCH);
+        actionReceivedSwitchItem.getSwitch().setChecked(SerialPreferences.getReceiveActionPre() == Format.Receive.BYTETOHEX);
+        actionReceivedSwitchItem.getSwitch().setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                SerialPreferences.setReceiveActionPre(isChecked ? Format.Receive.BYTETOHEX : Format.Receive.DEFAULT);
+            }
+        });
 
         QMUICommonListItemView voiceDevItem = createItemView("串口名", SerialPreferences.getVoiceNamePre());
         voiceDevItem.setTag(VOICE_DEV_ITEM_ID);
@@ -116,6 +125,16 @@ public class SerialPortSettingFragment extends Fragment {
             }
         });
 
+        QMUICommonListItemView voiceReceivedSwitchItem = mGroupListView.createItemView("Hex接受");
+        voiceReceivedSwitchItem.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_SWITCH);
+        voiceReceivedSwitchItem.getSwitch().setChecked(SerialPreferences.getDeliveryVoicePre() == Format.Receive.BYTETOHEX);
+        voiceReceivedSwitchItem.getSwitch().setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                SerialPreferences.setReceiveVoicePre(isChecked ? Format.Receive.BYTETOHEX : Format.Receive.DEFAULT);
+            }
+        });
+
         QMUICommonListItemView cruiseDevItem = createItemView("串口名", SerialPreferences.getCruiseNamePre());
         cruiseDevItem.setTag(CRUISE_DEV_ITEM_ID);
         cruiseDevItem.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
@@ -132,6 +151,16 @@ public class SerialPortSettingFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 SerialPreferences.setDeliveryCruisePre(isChecked ? Format.Delivery.HEXTOBYTE : Format.Delivery.DEFAULT);
+            }
+        });
+
+        QMUICommonListItemView cruiseReceivedSwitchItem = mGroupListView.createItemView("Hex发送");
+        cruiseReceivedSwitchItem.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_SWITCH);
+        cruiseReceivedSwitchItem.getSwitch().setChecked(SerialPreferences.getReceiveCruisePre() == Format.Receive.BYTETOHEX);
+        cruiseReceivedSwitchItem.getSwitch().setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                SerialPreferences.setReceiveCruisePre(isChecked ? Format.Receive.BYTETOHEX : Format.Receive.DEFAULT);
             }
         });
 
@@ -178,6 +207,7 @@ public class SerialPortSettingFragment extends Fragment {
 
                 SerialControl.getInstance().stopManager();
                 SerialControl.getInstance().startManager(getActivity().getApplicationContext());
+                getActivity().finish();
             }
         });
     }

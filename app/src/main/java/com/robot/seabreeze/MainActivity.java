@@ -22,11 +22,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private android.widget.EditText etaction;
     private android.widget.EditText etvoice;
     private android.widget.EditText etcruise;
+    private EditText etactionreceived;
+    private EditText etvoicereceived;
+    private EditText etcruisereceived;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        this.etcruisereceived = (EditText) findViewById(R.id.et_cruise_received);
+        this.etvoicereceived = (EditText) findViewById(R.id.et_voice_received);
+        this.etactionreceived = (EditText) findViewById(R.id.et_action_received);
         this.etcruise = (EditText) findViewById(R.id.et_cruise);
         this.etvoice = (EditText) findViewById(R.id.et_voice);
         this.etaction = (EditText) findViewById(R.id.et_action);
@@ -39,35 +46,45 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnvoice.setOnClickListener(this);
         btncruise.setOnClickListener(this);
         btnSetting.setOnClickListener(this);
-        SerialControl.getInstance().registerObserver(receiveData);
 
     }
 
     @Override
-    protected void onDestroy() {
+    protected void onStart() {
+        super.onStart();
+        SerialControl.getInstance().registerObserver(receiveData);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
         SerialControl.getInstance().unRegisterObserver(receiveData);
+    }
+
+    @Override
+    protected void onDestroy() {
         SerialControl.getInstance().stopManager();
         super.onDestroy();
     }
 
     ReceiveData receiveData = new ReceiveData() {
         @Override
+        public void onActionReceived(String info) {
+            super.onActionReceived(info);
+            etactionreceived.setText(info);
+        }
+
+        @Override
         public void onActionReceived(byte[] bytes) {
             super.onActionReceived(bytes);
             String feedback = HexUtils.hexStringToString(HexUtils.byte2HexStr(bytes));
-            if (!TextUtils.isEmpty(feedback)) {
-                feedback = feedback.replaceAll(" ", "");
-                if (feedback.length() == 10) {
-                    String sub = feedback.substring(6, 8);
-                    long electric = Long.parseLong(sub, 16);
-                    Logger.e(electric);
-                }
-            }
+            etactionreceived.setText(feedback);
         }
 
         @Override
         public void onVoiceReceived(String info) {
             super.onVoiceReceived(info);
+            etvoicereceived.setText(info);
             if (info.contains("WAKE UP!")) {
 
                 if (info.contains("##### IFLYTEK")) {
@@ -94,6 +111,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     SerialControl.getInstance().sendVoiceData("BEAM 0\n\r");
                 }
             }
+        }
+
+        @Override
+        public void onVoiceReceived(byte[] bytes) {
+            super.onVoiceReceived(bytes);
+        }
+
+        @Override
+        public void onCruiseReceived(String info) {
+            super.onCruiseReceived(info);
+            etcruisereceived.setText(info);
         }
     };
 

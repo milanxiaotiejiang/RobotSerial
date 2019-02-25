@@ -1,6 +1,8 @@
 package com.robot.seabreeze.serial;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 
 import com.robot.seabreeze.log.Logger;
@@ -111,14 +113,20 @@ public class SerialConfig implements OnOpenSerialPortListener, OnSerialPortDataL
     }
 
     @Override
-    public void onDataReceived(String absolute, int baudRate, byte[] bytes) {
-        if (baudRate == actionBaudrate) {
-            receivedActionData(bytes);
-        } else if (baudRate == voiceBaudrate) {
-            receivedVoiceData(bytes);
-        } else if (baudRate == cruiseBaudrate) {
-            receivedCruiseData(bytes);
-        }
+    public void onDataReceived(String absolute, final int baudRate, final byte[] bytes) {
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                if (baudRate == actionBaudrate) {
+                    receivedActionData(bytes);
+                } else if (baudRate == voiceBaudrate) {
+                    receivedVoiceData(bytes);
+                } else if (baudRate == cruiseBaudrate) {
+                    receivedCruiseData(bytes);
+                }
+            }
+        });
     }
 
     private void receivedActionData(byte[] bytes) {
