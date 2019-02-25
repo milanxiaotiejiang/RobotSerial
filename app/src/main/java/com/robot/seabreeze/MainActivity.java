@@ -5,24 +5,35 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 
 import com.robot.seabreeze.log.Logger;
 import com.robot.seabreeze.serial.HexUtils;
 import com.robot.seabreeze.serial.ReceiveData;
 import com.robot.seabreeze.serial.SerialControl;
-import com.robot.seabreeze.serial.setting.SerialPortSettingFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private android.widget.Button btnaction;
+    private android.widget.Button btnvoice;
+    private android.widget.Button btncruise;
+    private Button btnSetting;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        this.btncruise = (Button) findViewById(R.id.btn_cruise);
+        this.btnvoice = (Button) findViewById(R.id.btn_voice);
+        this.btnaction = (Button) findViewById(R.id.btn_action);
+        this.btnSetting = findViewById(R.id.btn_setting);
 
+        btnaction.setOnClickListener(this);
+        btnvoice.setOnClickListener(this);
+        btncruise.setOnClickListener(this);
+        btnSetting.setOnClickListener(this);
         SerialControl.getInstance().registerObserver(receiveData);
 
-
-        SerialControl.getInstance().sendActionData("A5078000AA");
     }
 
     @Override
@@ -79,7 +90,21 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    public void onClick(View view) {
-        startActivity(new Intent(this, SettingActivity.class));
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_action:
+                SerialControl.getInstance().sendActionData("A5078000AA");
+                break;
+            case R.id.btn_voice:
+                SerialControl.getInstance().sendVoiceData("BEAM 0\n\r");
+                break;
+            case R.id.btn_cruise:
+                SerialControl.getInstance().sendCruiseData("first");
+                break;
+            case R.id.btn_setting:
+                startActivity(new Intent(MainActivity.this, SettingActivity.class));
+                break;
+        }
     }
 }

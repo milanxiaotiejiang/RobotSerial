@@ -5,13 +5,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.Toast;
 
-import com.qmuiteam.qmui.widget.QMUIWindowInsetLayout;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
@@ -20,12 +20,12 @@ import com.robot.seabreeze.log.Logger;
 import com.robot.seabreeze.serial.Device;
 import com.robot.seabreeze.serial.Format;
 import com.robot.seabreeze.serial.R;
-import com.robot.seabreeze.serial.SerialConfig;
 import com.robot.seabreeze.serial.SerialControl;
 import com.robot.seabreeze.serial.SerialPortFinder;
 import com.robot.seabreeze.serial.SerialPreferences;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Author: MiLan
@@ -37,6 +37,10 @@ public class SerialPortSettingFragment extends Fragment {
 
     private QMUIGroupListView mGroupListView;
     private QMUIRoundButton mStructure;
+
+    private String[] deviceNameArrays;
+    private String[] deviceBaudrateArrays = {"4800", "9600", "1920", "38400", "57600", "115200", "230400",
+            "460800", "500000", "576000", "921600", "1000000", "1152000"};
 
     @Nullable
     @Override
@@ -60,7 +64,10 @@ public class SerialPortSettingFragment extends Fragment {
     private void initDriver() {
         if (finder.canRead()) {
             ArrayList<Device> devices = finder.getDevices();
-            Logger.e(devices);
+            deviceNameArrays = new String[devices.size()];
+            for (int i = 0; i < devices.size(); i++) {
+                deviceNameArrays[i] = devices.get(i).getName();
+            }
         }
     }
 
@@ -132,8 +139,7 @@ public class SerialPortSettingFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (v instanceof QMUICommonListItemView) {
-                    CharSequence text = ((QMUICommonListItemView) v).getText();
-                    showSingleChoiceDialog((int) v.getTag());
+                    showSingleChoiceDialog((QMUICommonListItemView) v);
                 }
             }
         };
@@ -176,40 +182,102 @@ public class SerialPortSettingFragment extends Fragment {
         });
     }
 
-    private int mCurrentDialogStyle = com.qmuiteam.qmui.R.style.QMUI_Dialog;
 
-    private void showSingleChoiceDialog(final int tag) {
-        final String[] items = new String[]{"选项1", "选项2", "选项3"};
-        final int checkedIndex = 1;
+    private void showSingleChoiceDialog(final QMUICommonListItemView v) {
+        switch ((int) v.getTag()) {
+            case ACTION_DEV_ITEM_ID:
+            case VOICE_DEV_ITEM_ID:
+            case CRUISE_DEV_ITEM_ID:
+                if (deviceNameArrays == null || deviceNameArrays.length == 0) {
+                    Toast.makeText(getActivity(), "当前设备没有串口", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                String devName = String.valueOf(v.getDetailText());
+                int devNameCheckedIndex = Arrays.binarySearch(deviceNameArrays, devName);
+                dialogShow(v, deviceNameArrays, devNameCheckedIndex);
+                break;
+            case ACTION_BAUDRATE_ITEM_ID:
+            case VOICE_BAUDRATE_ITEM_ID:
+            case CRUISE_BAUDRATE_ITEM_ID:
+                if (deviceBaudrateArrays == null || deviceBaudrateArrays.length == 0) {
+                    Toast.makeText(getActivity(), "当前设备没有串口", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                int devBaudrate = Integer.valueOf(v.getDetailText().toString());
+                int devBaudrateCheckedIndex = Arrays.binarySearch(deviceBaudrateArrays, devBaudrate);
+                dialogShow(v, deviceBaudrateArrays, devBaudrateCheckedIndex);
+                break;
+        }
+    }
+
+    private void dialogShow(final QMUICommonListItemView v, final CharSequence[] arrays, int checkedIndex) {
         new QMUIDialog.CheckableDialogBuilder(getActivity())
                 .setCheckedIndex(checkedIndex)
-                .addItems(items, new DialogInterface.OnClickListener() {
+                .addItems(arrays, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        switch (tag) {
-                            case ACTION_DEV_ITEM_ID:
-                                Toast.makeText(getActivity(), "你选择了 " + items[which], Toast.LENGTH_SHORT).show();
-                                break;
-                            case ACTION_BAUDRATE_ITEM_ID:
 
+                        String actionNamePre = SerialPreferences.getActionNamePre();
+                        String voiceNamePre = SerialPreferences.getVoiceNamePre();
+                        String cruiseNamePre = SerialPreferences.getCruiseNamePre();
+
+                        switch ((int) v.getTag()) {
+                            case ACTION_DEV_ITEM_ID:
+                                String actionDevName = String.valueOf(arrays[which]);
+                                Logger.e(actionDevName);
+
+                                if (TextUtils.equals(actionDevName, voiceNamePre) || TextUtils.equals(actionDevName, cruiseNamePre)) {
+                                    Toast.makeText(getActivity(), "串口已经被占用", Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
+                                v.setDetailText(actionDevName);
+                                SerialPreferences.setActionNamePre(actionDevName);
                                 break;
                             case VOICE_DEV_ITEM_ID:
+                                String voiceDevName = String.valueOf(arrays[which]);
+                                Logger.e(voiceDevName);
 
-                                break;
-                            case VOICE_BAUDRATE_ITEM_ID:
-
+                                if (TextUtils.equals(voiceDevName, actionNamePre) || TextUtils.equals(voiceDevName, cruiseNamePre)) {
+                                    Toast.makeText(getActivity(), "串口已经被占用", Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
+                                v.setDetailText(voiceDevName);
+                                SerialPreferences.setVoiceNamePre(voiceDevName);
                                 break;
                             case CRUISE_DEV_ITEM_ID:
+                                String cruiseDevName = String.valueOf(arrays[which]);
+                                Logger.e(cruiseDevName);
 
+                                if (TextUtils.equals(cruiseDevName, actionNamePre) || TextUtils.equals(cruiseDevName, voiceNamePre)) {
+                                    Toast.makeText(getActivity(), "串口已经被占用", Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
+                                v.setDetailText(cruiseDevName);
+                                SerialPreferences.setCruiseNamePre(cruiseDevName);
+                                break;
+                            case ACTION_BAUDRATE_ITEM_ID:
+                                int actionBaudrate = Integer.valueOf(arrays[which].toString());
+                                Logger.e(actionBaudrate);
+                                v.setDetailText(String.valueOf(actionBaudrate));
+                                SerialPreferences.setActionBaudratePre(actionBaudrate);
+                                break;
+                            case VOICE_BAUDRATE_ITEM_ID:
+                                int voiceBaudrate = Integer.valueOf(arrays[which].toString());
+                                Logger.e(voiceBaudrate);
+                                v.setDetailText(String.valueOf(voiceBaudrate));
+                                SerialPreferences.setVoiceBaudratePre(voiceBaudrate);
                                 break;
                             case CRUISE_BAUDRATE_ITEM_ID:
-
+                                int cruiseBaudrate = Integer.valueOf(arrays[which].toString());
+                                Logger.e(cruiseBaudrate);
+                                v.setDetailText(String.valueOf(cruiseBaudrate));
+                                SerialPreferences.setCruiseBaudratePre(cruiseBaudrate);
                                 break;
                         }
-
                         dialog.dismiss();
                     }
                 })
                 .create().show();
     }
+
 }

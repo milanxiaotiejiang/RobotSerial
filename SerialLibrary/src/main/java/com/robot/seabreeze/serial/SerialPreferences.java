@@ -7,21 +7,21 @@ package com.robot.seabreeze.serial;
  */
 public class SerialPreferences {
 
-    private static String PRE_ACTION_NAME;
-    private static String PRE_AVOICE_NAME;
-    private static String PRE_ACRUISE_NAME;
+    private static String PRE_ACTION_NAME = "PRE_ACTION_NAME";
+    private static String PRE_AVOICE_NAME = "PRE_AVOICE_NAME";
+    private static String PRE_ACRUISE_NAME = "PRE_ACRUISE_NAME";
 
-    private static String PRE_AACTION_BAUDRATE;
-    private static String PRE_AVOICE_BAUDRATE;
-    private static String PRE_ACRUISE_BAUDRATE;
+    private static String PRE_AACTION_BAUDRATE = "PRE_AACTION_BAUDRATE";
+    private static String PRE_AVOICE_BAUDRATE = "PRE_AVOICE_BAUDRATE";
+    private static String PRE_ACRUISE_BAUDRATE = "PRE_ACRUISE_BAUDRATE";
 
-    private static String PRE_ADELIVERY_ACTION;
-    private static String PRE_ADELIVERY_VOICE;
-    private static String PRE_ADELIVERY_CRUISE;
+    private static String PRE_ADELIVERY_ACTION = "PRE_ADELIVERY_ACTION";
+    private static String PRE_ADELIVERY_VOICE = "PRE_ADELIVERY_VOICE";
+    private static String PRE_ADELIVERY_CRUISE = "PRE_ADELIVERY_CRUISE";
 
-    private static String PRE_ARECEIVE_ACTION;
-    private static String PRE_ARECEIVE_VOICE;
-    private static String PRE_ARECEIVE_CRUISE;
+    private static String PRE_ARECEIVE_ACTION = "PRE_ARECEIVE_ACTION";
+    private static String PRE_ARECEIVE_VOICE = "PRE_ARECEIVE_VOICE";
+    private static String PRE_ARECEIVE_CRUISE = "PRE_ARECEIVE_CRUISE";
 
     public static void setActionNamePre(String actionName) {
         PreferencesUtils.putString(SerialControl.getInstance().getContext(), PRE_ACTION_NAME, actionName);

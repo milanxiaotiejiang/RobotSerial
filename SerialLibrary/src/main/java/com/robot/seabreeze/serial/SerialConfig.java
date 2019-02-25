@@ -94,7 +94,7 @@ public class SerialConfig implements OnOpenSerialPortListener, OnSerialPortDataL
 
     @Override
     public void onSuccess(File device, int baudRate) {
-        Logger.e(String.format("串口 [%s] 打开成功   波特率 %s", device.getPath(), baudRate));
+        Logger.i(String.format("串口 [%s] 打开成功   波特率 %s", device.getPath(), baudRate));
     }
 
     @Override
@@ -168,7 +168,7 @@ public class SerialConfig implements OnOpenSerialPortListener, OnSerialPortDataL
 
     @Override
     public void onDataSent(String absolute, int baudRate, byte[] bytes) {
-        Logger.e("send success " + baudRate);
+        Logger.i("send success " + baudRate);
     }
 
     private List<ReceivedListener> mObservers = new ArrayList<>();

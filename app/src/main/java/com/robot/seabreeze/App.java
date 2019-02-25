@@ -23,7 +23,7 @@ public class App extends Application {
         if (BuildConfig.DEBUG) {
             Logger.getLogConfig()
                     .configAllowLog(true)
-                    .configShowBorders(true);
+                    .configShowBorders(false);
             Logger.plant(new FileTree(this, "Logger"));
 //            Logger.plant(new ConsoleTree());
             Logger.plant(new LogcatTree());

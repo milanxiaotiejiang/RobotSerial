@@ -24,7 +24,7 @@ public class SerialPortFinder {
     public boolean canRead() {
         File file = new File(DRIVERS_PATH);
         boolean b = file.canRead();
-        Logger.e("SerialPortFinder: file.canRead() = " + b);
+        Logger.i("SerialPortFinder: file.canRead() = " + b);
         return b;
     }
 

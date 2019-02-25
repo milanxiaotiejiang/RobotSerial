@@ -38,7 +38,6 @@ public class Driver {
         int i;
         for (i = 0; i < files.length; i++) {
             if (files[i].getAbsolutePath().startsWith(mDeviceRoot)) {
-                Logger.e("Found new device: " + files[i]);
                 devices.add(files[i]);
             }
         }

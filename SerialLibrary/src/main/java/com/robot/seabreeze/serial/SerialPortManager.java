@@ -43,7 +43,7 @@ public class SerialPortManager extends SerialPort {
      */
     public boolean openSerialPort(File device, int baudRate) {
 
-        Logger.e("openSerialPort: " + String.format("打开串口 %s  波特率 %s", device.getPath(), baudRate));
+        Logger.i("openSerialPort: " + String.format("打开串口 %s  波特率 %s", device.getPath(), baudRate));
 
         // 校验串口权限
         if (!device.canRead() || !device.canWrite()) {
@@ -180,12 +180,9 @@ public class SerialPortManager extends SerialPort {
      * 开启接收消息的线程
      */
     private void startReadThread(String absolute, int baudRate) {
-        Logger.e("启动线程");
         mSerialPortReadThread = new SerialPortReadThread(absolute, baudRate, mFileInputStream) {
             @Override
             public void onDataReceived(String absolute, int baudRate, byte[] bytes) {
-
-                Logger.e("线程启动了");
                 if (null != mOnSerialPortDataListener) {
                     mOnSerialPortDataListener.onDataReceived(absolute, baudRate, bytes);
                 }
