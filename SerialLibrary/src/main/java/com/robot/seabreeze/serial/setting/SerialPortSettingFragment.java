@@ -88,7 +88,7 @@ public class SerialPortSettingFragment extends Fragment {
         actionBaudrateItem.setTag(ACTION_BAUDRATE_ITEM_ID);
         actionBaudrateItem.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
 
-        QMUICommonListItemView actionSwitchItem = mGroupListView.createItemView("是否Hex解析");
+        QMUICommonListItemView actionSwitchItem = mGroupListView.createItemView("Hex发送");
         actionSwitchItem.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_SWITCH);
         actionSwitchItem.getSwitch().setChecked(SerialPreferences.getDeliveryActionPre() == Format.Delivery.HEXTOBYTE);
         actionSwitchItem.getSwitch().setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -106,7 +106,7 @@ public class SerialPortSettingFragment extends Fragment {
         voiceBaudrateItem.setTag(VOICE_BAUDRATE_ITEM_ID);
         voiceBaudrateItem.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
 
-        QMUICommonListItemView voiceSwitchItem = mGroupListView.createItemView("是否Hex解析");
+        QMUICommonListItemView voiceSwitchItem = mGroupListView.createItemView("Hex发送");
         voiceSwitchItem.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_SWITCH);
         voiceSwitchItem.getSwitch().setChecked(SerialPreferences.getDeliveryVoicePre() == Format.Delivery.HEXTOBYTE);
         voiceSwitchItem.getSwitch().setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -125,7 +125,7 @@ public class SerialPortSettingFragment extends Fragment {
         voiceBaudrateItem.setId(CRUISE_BAUDRATE_ITEM_ID);
         cruiseBaudrateItem.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
 
-        QMUICommonListItemView cruiseSwitchItem = mGroupListView.createItemView("是否Hex解析");
+        QMUICommonListItemView cruiseSwitchItem = mGroupListView.createItemView("Hex发送");
         cruiseSwitchItem.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_SWITCH);
         cruiseSwitchItem.getSwitch().setChecked(SerialPreferences.getDeliveryCruisePre() == Format.Delivery.HEXTOBYTE);
         cruiseSwitchItem.getSwitch().setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

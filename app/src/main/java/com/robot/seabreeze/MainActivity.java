@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.robot.seabreeze.log.Logger;
 import com.robot.seabreeze.serial.HexUtils;
@@ -18,11 +19,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private android.widget.Button btnvoice;
     private android.widget.Button btncruise;
     private Button btnSetting;
+    private android.widget.EditText etaction;
+    private android.widget.EditText etvoice;
+    private android.widget.EditText etcruise;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        this.etcruise = (EditText) findViewById(R.id.et_cruise);
+        this.etvoice = (EditText) findViewById(R.id.et_voice);
+        this.etaction = (EditText) findViewById(R.id.et_action);
         this.btncruise = (Button) findViewById(R.id.btn_cruise);
         this.btnvoice = (Button) findViewById(R.id.btn_voice);
         this.btnaction = (Button) findViewById(R.id.btn_action);
@@ -94,13 +101,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_action:
-                SerialControl.getInstance().sendActionData("A5078000AA");
+                String action = etaction.getText().toString();
+                if (TextUtils.isEmpty(action)) {
+                    return;
+                }
+                SerialControl.getInstance().sendActionData(action);
                 break;
             case R.id.btn_voice:
-                SerialControl.getInstance().sendVoiceData("BEAM 0\n\r");
+                String voice = etvoice.getText().toString();
+                if (TextUtils.isEmpty(voice)) {
+                    return;
+                }
+                SerialControl.getInstance().sendVoiceData(voice);
                 break;
             case R.id.btn_cruise:
-                SerialControl.getInstance().sendCruiseData("first");
+                String cruise = etcruise.getText().toString();
+                if (TextUtils.isEmpty(cruise)) {
+                    return;
+                }
+                SerialControl.getInstance().sendCruiseData(cruise);
                 break;
             case R.id.btn_setting:
                 startActivity(new Intent(MainActivity.this, SettingActivity.class));

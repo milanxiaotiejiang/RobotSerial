@@ -6,23 +6,56 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/btn_action"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="动作测试" />
+        android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/btn_voice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="语音测试" />
+        <EditText
+            android:id="@+id/et_action"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content" />
 
-    <Button
-        android:id="@+id/btn_cruise"
-        android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/btn_action"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="动作测试" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="导航测试" />
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/et_voice"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/btn_voice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="语音测试" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/et_cruise"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/btn_cruise"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="导航测试" />
+    </LinearLayout>
 
     <Button
         android:id="@+id/btn_setting"

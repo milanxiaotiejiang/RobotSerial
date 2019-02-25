@@ -44,10 +44,10 @@ public class SerialControl {
                 .configVoice(SerialPreferences.getVoiceNamePre(), SerialPreferences.getVoiceBaudratePre())
                 .configCruise(SerialPreferences.getCruiseNamePre(), SerialPreferences.getCruiseBaudratePre())
                 .formatDeliveryAction(SerialPreferences.getDeliveryActionPre())
-                .formatReceiveAction(SerialPreferences.getDeliveryVoicePre())
-                .formatDeliveryVoice(SerialPreferences.getDeliveryCruisePre())
-                .formatReceiveVoice(Format.Receive.BYTETOHEX)
-                .formatDeliveryCruise(Format.Delivery.HEXTOBYTE)
+                .formatDeliveryVoice(SerialPreferences.getDeliveryVoicePre())
+                .formatDeliveryCruise(SerialPreferences.getDeliveryCruisePre())
+                .formatReceiveAction(Format.Receive.BYTETOHEX)
+                .formatReceiveVoice(Format.Receive.DEFAULT)
                 .formatReceiveCruise(Format.Receive.DEFAULT)
                 .build();
         mConfig.initManager();
