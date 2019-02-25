@@ -35,9 +35,21 @@ public class SerialControl {
         return mContext;
     }
 
-    public void startManager(SerialConfig config) {
-        mConfig = config;
-        mContext = config.getContext();
+    public void startManager(Context context) {
+        mContext = context;
+        SerialConfig.Builder builder = new SerialConfig.Builder();
+        mConfig = builder
+                .configContext(context)
+                .configAction(SerialPreferences.getActionNamePre(), SerialPreferences.getActionBaudratePre())
+                .configVoice(SerialPreferences.getVoiceNamePre(), SerialPreferences.getVoiceBaudratePre())
+                .configCruise(SerialPreferences.getCruiseNamePre(), SerialPreferences.getCruiseBaudratePre())
+                .formatDeliveryAction(SerialPreferences.getDeliveryActionPre())
+                .formatReceiveAction(SerialPreferences.getDeliveryVoicePre())
+                .formatDeliveryVoice(SerialPreferences.getDeliveryCruisePre())
+                .formatReceiveVoice(Format.Receive.BYTETOHEX)
+                .formatDeliveryCruise(Format.Delivery.HEXTOBYTE)
+                .formatReceiveCruise(Format.Receive.DEFAULT)
+                .build();
         mConfig.initManager();
     }
 
