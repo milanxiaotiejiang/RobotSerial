@@ -31,13 +31,13 @@ public class SerialConfig implements OnOpenSerialPortListener, OnSerialPortDataL
     private int voiceBaudrate;
     private int cruiseBaudrate;
 
-    private Format.Delivery deliveryAction;
-    private Format.Delivery deliveryVoice;
-    private Format.Delivery deliveryCruise;
+    private int deliveryAction;
+    private int deliveryVoice;
+    private int deliveryCruise;
 
-    private Format.Receive receiveAction;
-    private Format.Receive receiveVoice;
-    private Format.Receive receiveCruise;
+    private int receiveAction;
+    private int receiveVoice;
+    private int receiveCruise;
 
     private byte[] actionCustomBytes;
     private byte[] voiceCustomBytes;
@@ -123,11 +123,11 @@ public class SerialConfig implements OnOpenSerialPortListener, OnSerialPortDataL
 
     private void receivedActionData(byte[] bytes) {
         switch (receiveAction) {
-            case BYTETOHEX:
+            case Format.Receive.BYTETOHEX:
                 String msg = HexUtils.byte2HexStr(bytes);
                 notifyActionData(msg);
                 break;
-            case CUSTOM:
+            case Format.Receive.CUSTOM:
                 notifyActionData(bytes);
                 break;
             default:
@@ -138,11 +138,11 @@ public class SerialConfig implements OnOpenSerialPortListener, OnSerialPortDataL
 
     private void receivedVoiceData(byte[] bytes) {
         switch (receiveVoice) {
-            case BYTETOHEX:
+            case Format.Receive.BYTETOHEX:
                 String msg = HexUtils.byte2HexStr(bytes);
                 notifyVoiceData(msg);
                 break;
-            case CUSTOM:
+            case Format.Receive.CUSTOM:
                 notifyVoiceData(bytes);
                 break;
             default:
@@ -153,11 +153,11 @@ public class SerialConfig implements OnOpenSerialPortListener, OnSerialPortDataL
 
     private void receivedCruiseData(byte[] bytes) {
         switch (receiveCruise) {
-            case BYTETOHEX:
+            case Format.Receive.BYTETOHEX:
                 String msg = HexUtils.byte2HexStr(bytes);
                 notifyCruiseData(msg);
                 break;
-            case CUSTOM:
+            case Format.Receive.CUSTOM:
                 notifyCruiseData(bytes);
                 break;
             default:
@@ -250,27 +250,27 @@ public class SerialConfig implements OnOpenSerialPortListener, OnSerialPortDataL
         return cruiseBaudrate;
     }
 
-    public Format.Delivery getDeliveryAction() {
+    public int getDeliveryAction() {
         return deliveryAction;
     }
 
-    public Format.Delivery getDeliveryVoice() {
+    public int getDeliveryVoice() {
         return deliveryVoice;
     }
 
-    public Format.Delivery getDeliveryCruise() {
+    public int getDeliveryCruise() {
         return deliveryCruise;
     }
 
-    public Format.Receive getReceiveAction() {
+    public int getReceiveAction() {
         return receiveAction;
     }
 
-    public Format.Receive getReceiveVoice() {
+    public int getReceiveVoice() {
         return receiveVoice;
     }
 
-    public Format.Receive getReceiveCruise() {
+    public int getReceiveCruise() {
         return receiveCruise;
     }
 
@@ -314,13 +314,13 @@ public class SerialConfig implements OnOpenSerialPortListener, OnSerialPortDataL
         private int voiceBaudrate;
         private int cruiseBaudrate;
 
-        private Format.Delivery deliveryAction;
-        private Format.Delivery deliveryVoice;
-        private Format.Delivery deliveryCruise;
+        private int deliveryAction;
+        private int deliveryVoice;
+        private int deliveryCruise;
 
-        private Format.Receive receiveAction;
-        private Format.Receive receiveVoice;
-        private Format.Receive receiveCruise;
+        private int receiveAction;
+        private int receiveVoice;
+        private int receiveCruise;
 
         private byte[] actionCustomBytes;
         private byte[] voiceCustomBytes;
@@ -376,32 +376,32 @@ public class SerialConfig implements OnOpenSerialPortListener, OnSerialPortDataL
             return this;
         }
 
-        public Builder formatDeliveryAction(Format.Delivery delivery) {
+        public Builder formatDeliveryAction(@Format.Delivery int delivery) {
             deliveryAction = delivery;
             return this;
         }
 
-        public Builder formatDeliveryVoice(Format.Delivery delivery) {
+        public Builder formatDeliveryVoice(@Format.Delivery int delivery) {
             deliveryVoice = delivery;
             return this;
         }
 
-        public Builder formatDeliveryCruise(Format.Delivery delivery) {
+        public Builder formatDeliveryCruise(@Format.Delivery int delivery) {
             deliveryCruise = delivery;
             return this;
         }
 
-        public Builder formatReceiveAction(Format.Receive receive) {
+        public Builder formatReceiveAction(@Format.Receive int receive) {
             receiveAction = receive;
             return this;
         }
 
-        public Builder formatReceiveVoice(Format.Receive receive) {
+        public Builder formatReceiveVoice(@Format.Receive int receive) {
             receiveVoice = receive;
             return this;
         }
 
-        public Builder formatReceiveCruise(Format.Receive receive) {
+        public Builder formatReceiveCruise(@Format.Receive int receive) {
             receiveCruise = receive;
             return this;
         }
@@ -437,7 +437,7 @@ public class SerialConfig implements OnOpenSerialPortListener, OnSerialPortDataL
             if (TextUtils.equals(actionName, voiceName) ||
                     TextUtils.equals(actionName, cruiseName) ||
                     TextUtils.equals(voiceName, cruiseName)) {
-                throw new SerialPortException("Same serial slogan");
+                throw new RuntimeException("Same serial slogan");
             }
             return new SerialConfig(this);
         }

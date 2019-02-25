@@ -19,10 +19,15 @@ public class SerialPortFinder {
     private static final String SERIAL_FIELD = "serial";
 
     public SerialPortFinder() {
+    }
+
+    public boolean canRead() {
         File file = new File(DRIVERS_PATH);
         boolean b = file.canRead();
         Logger.e("SerialPortFinder: file.canRead() = " + b);
+        return b;
     }
+
 
     private ArrayList<Driver> getDrivers() throws IOException {
         ArrayList<Driver> drivers = new ArrayList<>();

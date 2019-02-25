@@ -4,14 +4,14 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.robot.seabreeze"
-        minSdkVersion 15
+        minSdkVersion 19
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
-            moduleName "SerialPort"
-            // abiFilters "armeabi", "armeabi-v7a", "x86" //输出指定的三种abi体系下的so库
+//            moduleName "SerialPort"
+//             abiFilters "armeabi", "armeabi-v7a"//, "x86" //输出指定的三种abi体系下的so库
         }
     }
     buildTypes {

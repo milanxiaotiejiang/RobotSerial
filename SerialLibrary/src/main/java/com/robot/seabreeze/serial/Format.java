@@ -5,18 +5,18 @@ package com.robot.seabreeze.serial;
  * Date: 2019/2/24
  * Description: 解析格式
  */
-public class Format {
+public @interface Format {
 
-    public enum Delivery {
-        DEFAULT,
-        HEXTOBYTE,
-        CUSTOM
+    @interface Delivery {
+        int DEFAULT = 0;
+        int HEXTOBYTE = 1;
+        int CUSTOM = 2;
     }
 
-    public enum Receive {
-        DEFAULT,
-        BYTETOHEX,
-        CUSTOM
+    @interface Receive {
+        int DEFAULT = 0;
+        int BYTETOHEX = 1;
+        int CUSTOM = 2;
     }
 
 }

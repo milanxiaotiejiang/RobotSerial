@@ -31,6 +31,10 @@ public class SerialControl {
         return singleton;
     }
 
+    public Context getContext() {
+        return mContext;
+    }
+
     public void startManager(SerialConfig config) {
         mConfig = config;
         mContext = config.getContext();
@@ -52,13 +56,13 @@ public class SerialControl {
 
     public void sendActionData(String motion) {
         switch (mConfig.getDeliveryAction()) {
-            case HEXTOBYTE:
+            case Format.Delivery.HEXTOBYTE:
                 byte[] bOutArray = HexUtils.HexToByteArr(motion);
                 mConfig.getActionManager().sendBytes(bOutArray);
                 break;
-            case CUSTOM:
+            case Format.Delivery.CUSTOM:
                 if (mConfig.getActionCustomBytes() == null) {
-                    throw new SerialPortException("data is null");
+                    throw new NullPointerException("data is null");
                 }
                 mConfig.getActionManager().sendBytes(mConfig.getActionCustomBytes());
                 break;
@@ -70,13 +74,13 @@ public class SerialControl {
 
     public void sendVoiceData(String motion) {
         switch (mConfig.getDeliveryVoice()) {
-            case HEXTOBYTE:
+            case Format.Delivery.HEXTOBYTE:
                 byte[] bOutArray = HexUtils.HexToByteArr(motion);
                 mConfig.getVoiceManager().sendBytes(bOutArray);
                 break;
-            case CUSTOM:
+            case Format.Delivery.CUSTOM:
                 if (mConfig.getVoiceCustomBytes() == null) {
-                    throw new SerialPortException("data is null");
+                    throw new NullPointerException("data is null");
                 }
                 mConfig.getVoiceManager().sendBytes(mConfig.getVoiceCustomBytes());
                 break;
@@ -88,13 +92,13 @@ public class SerialControl {
 
     public void sendCruiseData(String motion) {
         switch (mConfig.getDeliveryCruise()) {
-            case HEXTOBYTE:
+            case Format.Delivery.HEXTOBYTE:
                 byte[] bOutArray = HexUtils.HexToByteArr(motion);
                 mConfig.getCruiseManager().sendBytes(bOutArray);
                 break;
-            case CUSTOM:
+            case Format.Delivery.CUSTOM:
                 if (mConfig.getCruiseCustomBytes() == null) {
-                    throw new SerialPortException("data is null");
+                    throw new NullPointerException("data is null");
                 }
                 mConfig.getCruiseManager().sendBytes(mConfig.getCruiseCustomBytes());
                 break;
