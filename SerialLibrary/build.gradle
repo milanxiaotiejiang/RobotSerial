@@ -1,5 +1,8 @@
 apply plugin: 'com.android.library'
 
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
+
 android {
     compileSdkVersion 28
 
@@ -47,6 +50,10 @@ android {
             path "CMakeLists.txt"
         }
     }
+
+    lintOptions {
+        abortOnError false
+    }
 }
 
 dependencies {
@@ -55,4 +62,88 @@ dependencies {
 
     implementation 'com.seabreezerobot:LogLibrary:v1.0.0'
     implementation 'com.qmuiteam:qmui:1.2.0'
+
+
+    //上传编译的文件到bintray，使用如下的命令：
+    //gradlew bintrayUpload
+    /*library版本*/
+    version = "v1.0.0"
+    /*github上的项目主页以及git仓库地址*/
+    def siteUrl = 'https://github.com/milanxiaotiejiang/RobotSerial'
+    def gitUrl = 'https://github.com/milanxiaotiejiang/RobotSerial.git'
+    /* maven group ID 这个gruop很重要，
+       参考 compile 'groupId:artifactId:version'
+       groupId就是这个，
+       artifactId就是包名，
+       version就是顶部那个
+    */
+    group = "com.seabreezerobot"
+    install {
+        repositories.mavenInstaller {
+            // This generates POM.xml with proper parameters
+            pom {
+                project {
+                    packaging 'aar'
+                    /*项目描述*/
+                    name 'android 串口'
+                    url siteUrl
+                    /*设置证书s*/
+                    licenses {
+                        license {
+                            name 'The Apache Software License, Version 2.0'
+                            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        }
+                    }
+                    developers {
+                        developer {
+                            id 'milan'
+                            name 'milan'
+                            email 'zhangtao@seabreezerobot.com'
+                        }
+                    }
+                    scm {
+                        connection gitUrl
+                        developerConnection gitUrl
+                        url siteUrl
+                    }
+                }
+            }
+        }
+    }
+    task sourcesJar(type: Jar) {
+        from android.sourceSets.main.java.srcDirs
+        classifier = 'sources'
+    }
+    task javadoc(type: Javadoc) {
+        source = android.sourceSets.main.java.srcDirs
+        classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+        options.encoding = "UTF-8" //添加UTF-8编码方式
+    }
+    task javadocJar(type: Jar, dependsOn: javadoc) {
+        classifier = 'javadoc'
+        from javadoc.destinationDir
+    }
+    artifacts {
+        archives javadocJar
+        archives sourcesJar
+    }
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+    bintray {
+        user = properties.getProperty("bintray.user")
+        key = properties.getProperty("bintray.apikey")
+        configurations = ['archives']
+        pkg {
+            repo = "SerialLibrary"  //对应bintray账号上的仓库名称;发布到Bintray的那个仓库，即你在bintray网站建立的仓库名，若该仓库不存在，会报错。
+            name = "SerialLibrary"    //发布到JCenter仓库下的项目名字
+            websiteUrl = siteUrl
+            vcsUrl = gitUrl
+            licenses = ["Apache-2.0"]
+            publish = true
+        }
+    }
 }
+/**
+ * gradlew install
+ * gradlew bintrayUpload
+ */

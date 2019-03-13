@@ -10,8 +10,7 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
-//            moduleName "SerialPort"
-//             abiFilters "armeabi", "armeabi-v7a"//, "x86" //输出指定的三种abi体系下的so库
+             abiFilters  "armeabi-v7a"// ,"armeabi", "x86" //输出指定的三种abi体系下的so库
         }
     }
     buildTypes {
