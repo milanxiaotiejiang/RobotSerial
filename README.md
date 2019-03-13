@@ -3,7 +3,7 @@
 
 ## 如何使用它
 	dependencies { 
-		implementation 'com.seabreezerobot:LogSerial:v1.0.0'
+		implementation 'com.seabreezerobot:SerialLibrary:v1.0.0'
 	}
 
 ## 初始化
