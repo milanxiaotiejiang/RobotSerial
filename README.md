@@ -28,7 +28,7 @@
     
 ## 使用
 ###
-    设置页面
+###设置页面
     <activity
                 android:name=".SettingActivity"
                 android:theme="@style/Serial.Compat" />
@@ -44,7 +44,7 @@
                     .commit();
 
 ###
-    使用页面
+###使用页面
     @Override
     protected void onStart() {
         super.onStart();
