@@ -28,7 +28,7 @@
     
 ## 使用
 ###
-###设置页面
+#### 设置页面
     <activity
                 android:name=".SettingActivity"
                 android:theme="@style/Serial.Compat" />
@@ -44,7 +44,7 @@
                     .commit();
 
 ###
-###使用页面
+#### 使用页面
     @Override
     protected void onStart() {
         super.onStart();
@@ -63,16 +63,16 @@
         super.onDestroy();
     }
 
-### 1.动作
+#### 1.动作
       SerialControl.getInstance().sendActionData(action);
 
-### 2.语音
+#### 2.语音
       SerialControl.getInstance().sendVoiceData(voice);
 
-### 3.导航
+#### 3.导航
       SerialControl.getInstance().sendCruiseData(cruise);
 
-### 回调
+#### 回调
     ReceiveData receiveData = new ReceiveData()
 
 ## LICENSE
