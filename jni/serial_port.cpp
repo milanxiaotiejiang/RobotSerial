@@ -106,7 +106,6 @@ JNIEXPORT jobject JNICALL Java_com_robot_seabreeze_serial_SerialPort_open
     {
         speed = getBaudrate(baudrate);
         if (speed == -1) {
-            /* TODO: throw an exception */
             LOGE("Invalid baudrate");
             return NULL;
         }

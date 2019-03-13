@@ -32,9 +32,9 @@ public class App extends Application {
 //        SerialConfig.Builder builder = new SerialConfig.Builder();
 //        SerialConfig config = builder
 //                .configContext(this)
-//                .configAction("ttyXRUSB2", 9600)
-//                .configVoice("ttyS4", 115200)
-//                .configCruise("ttyXRUSB0", 38400)
+//                .configAction("ttyS1", 9600)
+//                .configVoice("ttyS2", 115200)
+//                .configCruise("ttyS3", 38400)
 //                .formatDeliveryAction(Format.Delivery.HEXTOBYTE)
 //                .formatReceiveAction(Format.Receive.CUSTOM)
 //                .formatDeliveryVoice(Format.Delivery.DEFAULT)
@@ -42,6 +42,7 @@ public class App extends Application {
 //                .formatDeliveryCruise(Format.Delivery.HEXTOBYTE)
 //                .formatReceiveCruise(Format.Receive.DEFAULT)
 //                .build();
+//        config.initManager();
         SerialControl.getInstance().startManager(this);
     }
 }
