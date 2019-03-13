@@ -1,5 +1,5 @@
 
-[ ![Download](https://api.bintray.com/packages/milanxiaotiejiang/RobotLog/RobotLog/images/download.svg) ](https://bintray.com/milanxiaotiejiang/RobotLog/RobotLog/_latestVersion)
+[ ![Download](https://api.bintray.com/packages/milanxiaotiejiang/SerialLibrary/SerialLibrary/images/download.svg?version=v1.0.0) ](https://bintray.com/milanxiaotiejiang/SerialLibrary/SerialLibrary/v1.0.0/link)
 
 ## 如何使用它
 	dependencies { 
