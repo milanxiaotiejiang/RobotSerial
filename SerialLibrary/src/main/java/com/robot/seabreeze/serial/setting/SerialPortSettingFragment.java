@@ -97,6 +97,7 @@ public class SerialPortSettingFragment extends Fragment {
                 SerialPreferences.setDeliveryActionPre(isChecked ? Format.Delivery.HEXTOBYTE : Format.Delivery.DEFAULT);
             }
         });
+
         QMUICommonListItemView actionReceivedSwitchItem = mGroupListView.createItemView("Hex接受");
         actionReceivedSwitchItem.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_SWITCH);
         actionReceivedSwitchItem.getSwitch().setChecked(SerialPreferences.getReceiveActionPre() == Format.Receive.BYTETOHEX);
@@ -178,6 +179,7 @@ public class SerialPortSettingFragment extends Fragment {
                 .addItemView(actionDevItem, onClickListener)
                 .addItemView(actionBaudrateItem, onClickListener)
                 .addItemView(actionSwitchItem, onClickListener)
+                .addItemView(actionReceivedSwitchItem, onClickListener)
                 .addTo(mGroupListView);
 
         QMUIGroupListView.newSection(getContext())
@@ -185,6 +187,7 @@ public class SerialPortSettingFragment extends Fragment {
                 .addItemView(voiceDevItem, onClickListener)
                 .addItemView(voiceBaudrateItem, onClickListener)
                 .addItemView(voiceSwitchItem, onClickListener)
+                .addItemView(voiceReceivedSwitchItem, onClickListener)
                 .addTo(mGroupListView);
 
         QMUIGroupListView.newSection(getContext())
@@ -192,6 +195,7 @@ public class SerialPortSettingFragment extends Fragment {
                 .addItemView(cruiseDevItem, onClickListener)
                 .addItemView(cruiseBaudrateItem, onClickListener)
                 .addItemView(cruiseSwitchItem, onClickListener)
+                .addItemView(cruiseReceivedSwitchItem, onClickListener)
                 .addTo(mGroupListView);
     }
 
