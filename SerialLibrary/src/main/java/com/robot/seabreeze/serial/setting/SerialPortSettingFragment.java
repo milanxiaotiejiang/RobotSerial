@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
@@ -142,7 +143,6 @@ public class SerialPortSettingFragment extends Fragment {
 
         QMUICommonListItemView cruiseBaudrateItem = createItemView("串口号", String.valueOf(SerialPreferences.getCruiseBaudratePre()));
         cruiseBaudrateItem.setTag(CRUISE_BAUDRATE_ITEM_ID);
-        voiceBaudrateItem.setId(CRUISE_BAUDRATE_ITEM_ID);
         cruiseBaudrateItem.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
 
         QMUICommonListItemView cruiseSwitchItem = mGroupListView.createItemView("Hex发送");

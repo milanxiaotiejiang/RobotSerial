@@ -1,5 +1,5 @@
 <resources>
 
-    <style name="Serial.Compat" parent="QMUI.Compat" />
+    <style name="Serial.Compat" parent="QMUI.Compat.NoActionBar" />
 
 </resources>

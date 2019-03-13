@@ -87,29 +87,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             etvoicereceived.setText(info);
             if (info.contains("WAKE UP!")) {
 
-                if (info.contains("##### IFLYTEK")) {
-
-                    String str;
-                    if (info.contains("score:")) {
-                        str = info.substring(info.indexOf("angle:") + 6, info.indexOf("score:"));
-                    } else {
-                        str = info.substring(info.indexOf("angle:") + 6, info.indexOf("##### IFLYTEK"));
-                    }
-                    int angle = Integer.parseInt(str.trim());
-
-                    Logger.e("解析到应该旋转的角度 : " + angle);
-                    if (0 <= angle && angle < 30) {
-                        SerialControl.getInstance().sendActionData("A521821EAA");
-
-                    } else if (30 <= angle && angle <= 60) {
-                        SerialControl.getInstance().sendActionData("A521823CAA");
-                    } else if (120 <= angle && angle <= 150) {
-                        SerialControl.getInstance().sendActionData("A5218278AA");
-                    } else if (150 < angle && angle <= 180) {
-                        SerialControl.getInstance().sendActionData("A5218296AA");
-                    }
-                    SerialControl.getInstance().sendVoiceData("BEAM 0\n\r");
+                String str;
+                if (info.contains("score:")) {
+                    str = info.substring(info.indexOf("angle:") + 6, info.indexOf("score:"));
+                } else {
+                    str = info.substring(info.indexOf("angle:") + 6, info.indexOf("##### IFLYTEK"));
                 }
+                int angle = Integer.parseInt(str.trim());
+
+                Logger.e("解析到应该旋转的角度 : " + angle);
             }
         }
 

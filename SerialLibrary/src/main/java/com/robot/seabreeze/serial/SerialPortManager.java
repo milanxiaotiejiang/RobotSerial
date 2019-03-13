@@ -211,7 +211,7 @@ public class SerialPortManager extends SerialPort {
             if (null != mSendingHandler) {
                 Message message = Message.obtain();
                 message.obj = sendBytes;
-                return mSendingHandler.sendMessage(message);
+                return mSendingHandler.sendMessageAtTime(message, 200);
             }
         }
         return false;
