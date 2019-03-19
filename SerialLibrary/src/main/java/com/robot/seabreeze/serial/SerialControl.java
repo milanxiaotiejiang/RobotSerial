@@ -1,9 +1,18 @@
 package com.robot.seabreeze.serial;
 
 import android.content.Context;
-import android.os.Handler;
+import android.content.Intent;
+import android.support.v4.content.LocalBroadcastManager;
 
 import com.robot.seabreeze.serial.listener.ReceivedListener;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.robot.seabreeze.serial.SerialService.ACTION_ACTION;
+import static com.robot.seabreeze.serial.SerialService.ACTION_CRUISE;
+import static com.robot.seabreeze.serial.SerialService.ACTION_VOICE;
+import static com.robot.seabreeze.serial.SerialService.EXTRA_MOTION;
 
 
 /**
@@ -14,7 +23,7 @@ import com.robot.seabreeze.serial.listener.ReceivedListener;
 public class SerialControl {
 
     private Context mContext;
-    private SerialConfig mConfig;
+    private LocalBroadcastManager mManager;
 
     private static SerialControl singleton;
 
@@ -32,102 +41,73 @@ public class SerialControl {
         return singleton;
     }
 
-    public Context getContext() {
-        return mContext;
+    public void init(Context context) {
+        mContext = context;
+        mManager = LocalBroadcastManager.getInstance(mContext);
     }
 
-    public void startManager(Context context) {
-        mContext = context;
-        SerialConfig.Builder builder = new SerialConfig.Builder();
-        mConfig = builder
-                .configContext(context)
-                .configAction(SerialPreferences.getActionNamePre(), SerialPreferences.getActionBaudratePre())
-                .configVoice(SerialPreferences.getVoiceNamePre(), SerialPreferences.getVoiceBaudratePre())
-                .configCruise(SerialPreferences.getCruiseNamePre(), SerialPreferences.getCruiseBaudratePre())
-                .formatDeliveryAction(SerialPreferences.getDeliveryActionPre())
-                .formatDeliveryVoice(SerialPreferences.getDeliveryVoicePre())
-                .formatDeliveryCruise(SerialPreferences.getDeliveryCruisePre())
-                .formatReceiveAction(SerialPreferences.getReceiveActionPre())
-                .formatReceiveVoice(SerialPreferences.getReceiveVoicePre())
-                .formatReceiveCruise(SerialPreferences.getReceiveCruisePre())
-                .build();
-        mConfig.initManager();
+    public void startManager() {
+        if (mContext == null) {
+            return;
+        }
+        mContext.startService(new Intent(mContext, SerialService.class));
     }
 
 
     public void stopManager() {
-        if (null != mConfig.getActionManager()) {
-            mConfig.getActionManager().closeSerialPort();
-        }
-        if (null != mConfig.getVoiceManager()) {
-            mConfig.getVoiceManager().closeSerialPort();
-        }
-        if (null != mConfig.getCruiseManager()) {
-            mConfig.getCruiseManager().closeSerialPort();
-        }
+        mContext.stopService(new Intent(mContext, SerialService.class));
     }
 
     public void sendActionData(String motion) {
-        switch (mConfig.getDeliveryAction()) {
-            case Format.Delivery.HEXTOBYTE:
-                byte[] bOutArray = HexUtils.HexToByteArr(motion);
-                mConfig.getActionManager().sendBytes(bOutArray);
-                break;
-            case Format.Delivery.CUSTOM:
-                if (mConfig.getActionCustomBytes() == null) {
-                    throw new NullPointerException("data is null");
-                }
-                mConfig.getActionManager().sendBytes(mConfig.getActionCustomBytes());
-                break;
-            default:
-                mConfig.getActionManager().sendBytes(motion.getBytes());
-                break;
+        Utils.isServiceRunning(mContext, SerialService.class.getSimpleName());
+        if (mManager == null) {
+            return;
         }
+        Intent intent = new Intent();
+        intent.setAction(ACTION_ACTION);
+        intent.putExtra(EXTRA_MOTION, motion);
+        mManager.sendBroadcast(intent);
     }
 
     public void sendVoiceData(String motion) {
-        switch (mConfig.getDeliveryVoice()) {
-            case Format.Delivery.HEXTOBYTE:
-                byte[] bOutArray = HexUtils.HexToByteArr(motion);
-                mConfig.getVoiceManager().sendBytes(bOutArray);
-                break;
-            case Format.Delivery.CUSTOM:
-                if (mConfig.getVoiceCustomBytes() == null) {
-                    throw new NullPointerException("data is null");
-                }
-                mConfig.getVoiceManager().sendBytes(mConfig.getVoiceCustomBytes());
-                break;
-            default:
-                mConfig.getVoiceManager().sendBytes(motion.getBytes());
-                break;
+        Utils.isServiceRunning(mContext, SerialService.class.getSimpleName());
+        if (mManager == null) {
+            return;
         }
+        Intent intent = new Intent();
+        intent.setAction(ACTION_VOICE);
+        intent.putExtra(EXTRA_MOTION, motion);
+        mManager.sendBroadcast(intent);
     }
 
     public void sendCruiseData(String motion) {
-        switch (mConfig.getDeliveryCruise()) {
-            case Format.Delivery.HEXTOBYTE:
-                byte[] bOutArray = HexUtils.HexToByteArr(motion);
-                mConfig.getCruiseManager().sendBytes(bOutArray);
-                break;
-            case Format.Delivery.CUSTOM:
-                if (mConfig.getCruiseCustomBytes() == null) {
-                    throw new NullPointerException("data is null");
-                }
-                mConfig.getCruiseManager().sendBytes(mConfig.getCruiseCustomBytes());
-                break;
-            default:
-                mConfig.getCruiseManager().sendBytes(motion.getBytes());
-                break;
+        Utils.isServiceRunning(mContext, SerialService.class.getSimpleName());
+        if (mManager == null) {
+            return;
         }
+        Intent intent = new Intent();
+        intent.setAction(ACTION_CRUISE);
+        intent.putExtra(EXTRA_MOTION, motion);
+        mManager.sendBroadcast(intent);
     }
+
+    public Context getContext() {
+        return mContext;
+    }
+
+    public List<ReceivedListener> getObservers() {
+        return mObservers;
+    }
+
+    private final List<ReceivedListener> mObservers = new ArrayList<>();
 
     /**
      * 注册观察者
      */
     public void registerObserver(ReceivedListener observer) {
-        synchronized (mConfig.getObservers()) {
-            if (!mConfig.getObservers().contains(observer)) {
-                mConfig.getObservers().add(observer);
+        synchronized (mObservers) {
+            if (!mObservers.contains(observer)) {
+                mObservers.add(observer);
             }
         }
     }
@@ -136,10 +116,8 @@ public class SerialControl {
      * 反注册观察者
      */
     public void unRegisterObserver(ReceivedListener observer) {
-        synchronized (mConfig.getObservers()) {
-            if (mConfig.getObservers().contains(observer)) {
-                mConfig.getObservers().remove(observer);
-            }
+        synchronized (mObservers) {
+            mObservers.remove(observer);
         }
     }
 }

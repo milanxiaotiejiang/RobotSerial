@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnvoice.setOnClickListener(this);
         btncruise.setOnClickListener(this);
         btnSetting.setOnClickListener(this);
-
+        SerialControl.getInstance().startManager();
     }
 
     @Override

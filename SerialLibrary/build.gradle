@@ -9,8 +9,8 @@ android {
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.0.2"
 
 //        ndk {
 //            moduleName "serial_port"
@@ -67,7 +67,7 @@ dependencies {
     //上传编译的文件到bintray，使用如下的命令：
     //gradlew bintrayUpload
     /*library版本*/
-    version = "v1.0.0"
+    version = "v1.0.1"
     /*github上的项目主页以及git仓库地址*/
     def siteUrl = 'https://github.com/milanxiaotiejiang/RobotSerial'
     def gitUrl = 'https://github.com/milanxiaotiejiang/RobotSerial.git'

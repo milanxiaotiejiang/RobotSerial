@@ -1,26 +1,19 @@
 package com.robot.seabreeze.serial;
 
 import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
 import android.text.TextUtils;
 
-import com.robot.seabreeze.log.Logger;
 import com.robot.seabreeze.serial.listener.ReceivedListener;
-import com.robot.seabreeze.serial.listener.OnOpenSerialPortListener;
-import com.robot.seabreeze.serial.listener.OnSerialPortDataListener;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
-
 
 /**
  * Author: MiLan
  * Date: 2019/2/24
  * Description:
  */
-public class SerialConfig implements OnOpenSerialPortListener, OnSerialPortDataListener {
+public class SerialConfig {
 
     private static final String DEV = "/dev/";
 
@@ -89,147 +82,9 @@ public class SerialConfig implements OnOpenSerialPortListener, OnSerialPortDataL
     private SerialPortManager initManager(String tag, String devName, int baudRate) {
         SerialPortManager manager = new SerialPortManager();
         manager.setTag(tag)
-                .setOnOpenSerialPortListener(this)
-                .setOnSerialPortDataListener(this)
                 .openSerialPort(new File(DEV + devName), baudRate);
         return manager;
     }
-
-    @Override
-    public void onSuccess(File device, int baudRate) {
-        Logger.i(String.format("串口 [%s] 打开成功   波特率 %s", device.getPath(), baudRate));
-    }
-
-    @Override
-    public void onFail(File device, Status status) {
-        switch (status) {
-            case NO_READ_WRITE_PERMISSION:
-                Logger.e(device.getPath() + " 没有读写权限");
-                break;
-            case OPEN_FAIL:
-            default:
-                Logger.e(device.getPath() + " 串口打开失败");
-                break;
-        }
-    }
-
-    @Override
-    public void onDataReceived(String absolute, final int baudRate, final byte[] bytes) {
-        Handler handler = new Handler(Looper.getMainLooper());
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                if (baudRate == actionBaudrate) {
-                    receivedActionData(bytes);
-                } else if (baudRate == voiceBaudrate) {
-                    receivedVoiceData(bytes);
-                } else if (baudRate == cruiseBaudrate) {
-                    receivedCruiseData(bytes);
-                }
-            }
-        });
-    }
-
-    private void receivedActionData(byte[] bytes) {
-        switch (receiveAction) {
-            case Format.Receive.BYTETOHEX:
-                String msg = HexUtils.byte2HexStr(bytes);
-                notifyActionData(msg);
-                break;
-            case Format.Receive.CUSTOM:
-                notifyActionData(bytes);
-                break;
-            default:
-                notifyActionData(new String(bytes));
-                break;
-        }
-    }
-
-    private void receivedVoiceData(byte[] bytes) {
-        switch (receiveVoice) {
-            case Format.Receive.BYTETOHEX:
-                String msg = HexUtils.byte2HexStr(bytes);
-                notifyVoiceData(msg);
-                break;
-            case Format.Receive.CUSTOM:
-                notifyVoiceData(bytes);
-                break;
-            default:
-                notifyVoiceData(new String(bytes));
-                break;
-        }
-    }
-
-    private void receivedCruiseData(byte[] bytes) {
-        switch (receiveCruise) {
-            case Format.Receive.BYTETOHEX:
-                String msg = HexUtils.byte2HexStr(bytes);
-                notifyCruiseData(msg);
-                break;
-            case Format.Receive.CUSTOM:
-                notifyCruiseData(bytes);
-                break;
-            default:
-                notifyCruiseData(new String(bytes));
-                break;
-        }
-    }
-
-    @Override
-    public void onDataSent(String absolute, int baudRate, byte[] bytes) {
-        Logger.i("send success " + baudRate);
-    }
-
-    private List<ReceivedListener> mObservers = new ArrayList<>();
-
-    private void notifyActionData(String info) {
-        synchronized (mObservers) {
-            for (ReceivedListener observer : mObservers) {
-                observer.onActionReceived(info);
-            }
-        }
-    }
-
-    private void notifyActionData(byte[] bytes) {
-        synchronized (mObservers) {
-            for (ReceivedListener observer : mObservers) {
-                observer.onActionReceived(bytes);
-            }
-        }
-    }
-
-    private void notifyVoiceData(String info) {
-        synchronized (mObservers) {
-            for (ReceivedListener observer : mObservers) {
-                observer.onVoiceReceived(info);
-            }
-        }
-    }
-
-    private void notifyVoiceData(byte[] bytes) {
-        synchronized (mObservers) {
-            for (ReceivedListener observer : mObservers) {
-                observer.onVoiceReceived(bytes);
-            }
-        }
-    }
-
-    private void notifyCruiseData(String info) {
-        synchronized (mObservers) {
-            for (ReceivedListener observer : mObservers) {
-                observer.onCruiseReceived(info);
-            }
-        }
-    }
-
-    private void notifyCruiseData(byte[] bytes) {
-        synchronized (mObservers) {
-            for (ReceivedListener observer : mObservers) {
-                observer.onCruiseReceived(bytes);
-            }
-        }
-    }
-
 
     public Context getContext() {
         return context;
@@ -308,7 +163,7 @@ public class SerialConfig implements OnOpenSerialPortListener, OnSerialPortDataL
     }
 
     public List<ReceivedListener> getObservers() {
-        return mObservers;
+        return SerialControl.getInstance().getObservers();
     }
 
     public static final class Builder {

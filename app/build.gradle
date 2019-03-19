@@ -34,6 +34,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 //    implementation project(':SerialLibrary')
-    implementation 'com.seabreezerobot:SerialLibrary:v1.0.0'
+    implementation 'com.seabreezerobot:SerialLibrary:v1.0.1'
     implementation 'com.seabreezerobot:LogLibrary:v1.0.0'
 }

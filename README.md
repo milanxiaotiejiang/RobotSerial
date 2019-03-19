@@ -3,29 +3,13 @@
 
 ## 如何使用它
 	dependencies { 
-		implementation 'com.seabreezerobot:SerialLibrary:v1.0.0'
+		implementation 'com.seabreezerobot:SerialLibrary:v1.0.1'
 	}
 
 ## 初始化
     自定义Application中启动默认参数
-	SerialControl.getInstance().startManager(this);
+	SerialControl.getInstance().init(this);
 
-	可以自定义
-    SerialConfig.Builder builder = new SerialConfig.Builder();
-    SerialConfig config = builder
-                    .configContext(this)
-                    .configAction("ttyS1", 9600)
-                    .configVoice("ttyS2", 115200)
-                    .configCruise("ttyS3", 38400)
-                    .formatDeliveryAction(Format.Delivery.HEXTOBYTE)
-                    .formatReceiveAction(Format.Receive.CUSTOM)
-                    .formatDeliveryVoice(Format.Delivery.DEFAULT)
-                    .formatReceiveVoice(Format.Receive.BYTETOHEX)
-                    .formatDeliveryCruise(Format.Delivery.HEXTOBYTE)
-                    .formatReceiveCruise(Format.Receive.DEFAULT)
-                    .build();
-    config.initManager();
-    
 ## 使用
 ###
 #### 设置页面
@@ -45,6 +29,13 @@
 
 ###
 #### 使用页面
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        SerialControl.getInstance().startManager();
+    }
+
     @Override
     protected void onStart() {
         super.onStart();

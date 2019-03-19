@@ -210,7 +210,7 @@ public class SerialPortSettingFragment extends Fragment {
             public void onClick(View v) {
 
                 SerialControl.getInstance().stopManager();
-                SerialControl.getInstance().startManager(getActivity().getApplicationContext());
+                SerialControl.getInstance().startManager();
                 getActivity().finish();
             }
         });
