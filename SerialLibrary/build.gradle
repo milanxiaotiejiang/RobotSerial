@@ -63,11 +63,10 @@ dependencies {
     implementation 'com.seabreezerobot:LogLibrary:v1.0.0'
     implementation 'com.qmuiteam:qmui:1.2.0'
 
-
     //上传编译的文件到bintray，使用如下的命令：
     //gradlew bintrayUpload
     /*library版本*/
-    version = "v1.0.1"
+    version = "v1.0.2"
     /*github上的项目主页以及git仓库地址*/
     def siteUrl = 'https://github.com/milanxiaotiejiang/RobotSerial'
     def gitUrl = 'https://github.com/milanxiaotiejiang/RobotSerial.git'
@@ -144,6 +143,5 @@ dependencies {
     }
 }
 /**
- * gradlew install
- * gradlew bintrayUpload
+ * gradlew clean build bintrayUpload -PbintrayUser=*****  -PbintrayKey=*****  -PdryRun=false
  */
