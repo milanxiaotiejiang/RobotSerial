@@ -7,6 +7,8 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.robot.seabreeze.log.Logger;
 import com.robot.seabreeze.serial.HexUtils;
@@ -25,6 +27,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private EditText etactionreceived;
     private EditText etvoicereceived;
     private EditText etcruisereceived;
+
+    LinearLayout ll;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +51,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btncruise.setOnClickListener(this);
         btnSetting.setOnClickListener(this);
         SerialControl.getInstance().startManager();
+
+        ll = findViewById(R.id.ll_test);
+
+        String[] action = getResources().getStringArray(R.array.action);
+        String[] actionOrder = getResources().getStringArray(R.array.action_order);
+
+        for (int i = 0; i < action.length; i++) {
+            Button view = new Button(this);
+            view.setText(action[i]);
+            view.setTag(actionOrder[i]);
+            view.setOnClickListener(this);
+            ll.addView(view);
+        }
     }
 
     @Override
@@ -138,6 +155,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btn_setting:
                 startActivity(new Intent(MainActivity.this, SettingActivity.class));
                 break;
+        }
+        String tag = (String) v.getTag();
+        if (!TextUtils.isEmpty(tag)) {
+            Logger.e(tag);
+            SerialControl.getInstance().sendActionData(tag);
         }
     }
 }

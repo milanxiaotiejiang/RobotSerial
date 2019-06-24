@@ -1,80 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".MainActivity">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".MainActivity">
 
-        <EditText
-            android:id="@+id/et_action"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:id="@+id/ll_test"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/et_action"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/btn_action"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="动作测试" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/et_voice"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/btn_voice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="语音测试" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/et_cruise"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/btn_cruise"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="导航测试" />
+        </LinearLayout>
 
         <Button
-            android:id="@+id/btn_action"
+            android:id="@+id/btn_setting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="动作测试" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+            android:text="设置" />
 
         <EditText
-            android:id="@+id/et_voice"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content" />
-
-        <Button
-            android:id="@+id/btn_voice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="语音测试" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+            android:id="@+id/et_action_received"
+            android:layout_width="match_parent"
+            android:layout_height="300dp" />
 
         <EditText
-            android:id="@+id/et_cruise"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content" />
+            android:id="@+id/et_voice_received"
+            android:layout_width="match_parent"
+            android:layout_height="300dp" />
 
-        <Button
-            android:id="@+id/btn_cruise"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="导航测试" />
+        <EditText
+            android:id="@+id/et_cruise_received"
+            android:layout_width="match_parent"
+            android:layout_height="300dp" />
     </LinearLayout>
 
-    <Button
-        android:id="@+id/btn_setting"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="设置" />
-
-    <EditText
-        android:id="@+id/et_action_received"
-        android:layout_width="match_parent"
-        android:layout_height="300dp" />
-
-    <EditText
-        android:id="@+id/et_voice_received"
-        android:layout_width="match_parent"
-        android:layout_height="300dp" />
-
-    <EditText
-        android:id="@+id/et_cruise_received"
-        android:layout_width="match_parent"
-        android:layout_height="300dp" />
-</LinearLayout>
+</ScrollView>

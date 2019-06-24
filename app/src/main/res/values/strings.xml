@@ -1,3 +1,95 @@
 <resources>
     <string name="app_name">RobotSerial</string>
+
+    <string-array name="action">
+        <item>双臂向左欢迎</item>
+        <item>双臂向右欢迎</item>
+        <item>单左手优雅解释</item>
+        <item>单右手优雅解释</item>
+        <item>W 型手势</item>
+        <item>小得瑟</item>
+        <item>运动左手在前</item>
+        <item>运动右手在前</item>
+        <item>连续运动</item>
+        <item>可爱摆臂</item>
+        <item>右手握手</item>
+        <item>打招呼手臂摇摆</item>
+        <item>拥抱</item>
+        <item>害羞捂脸</item>
+        <item>生气叉腰</item>
+        <item>考虑</item>
+        <item>左手演奏</item>
+        <item>双手演奏</item>
+        <item>太极</item>
+        <item>左手捶胸保证</item>
+        <item>右手捶胸保证</item>
+        <item>蛇行手臂</item>
+        <item>右手演奏</item>
+        <item>左手自我介绍</item>
+        <item>右手自我介绍</item>
+        <item>向左看</item>
+        <item>向右看</item>
+        <item>点头</item>
+        <item>摇头</item>
+        <item>向左欢迎+优雅解释左+Why 手势</item>
+        <item>向右欢迎+优雅解释右+小动作</item>
+        <item>运动左+运动右+连续运动</item>
+        <item>握手+优雅解释右</item>
+        <item>打招呼+握手+拥抱</item>
+        <item>捂脸+考虑+优雅解释右</item>
+        <item>拥抱+掐腰</item>
+        <item>优雅解释左+考虑+优雅解释右</item>
+        <item>单手演奏+害羞</item>
+        <item>连续运动+太极</item>
+        <item>左手保证+考虑</item>
+        <item>右手保证+考虑</item>
+        <item>双手演奏+可爱</item>
+        <item>双手打招呼（麦克风）</item>
+    </string-array>
+
+    <string-array name="action_order">
+        <item>A50C8001AA</item>
+        <item>A50C8002AA</item>
+        <item>A50C8003AA</item>
+        <item>A50C8004AA</item>
+        <item>A50C8005AA</item>
+        <item>A50C8006AA</item>
+        <item>A50C8007AA</item>
+        <item>A50C8008AA</item>
+        <item>A50C8009AA</item>
+        <item>A50C800BAA</item>
+        <item>A50C800CAA</item>
+        <item>A50C800DAA</item>
+        <item>A50C800EAA</item>
+        <item>A50C800FAA</item>
+        <item>A50C8010AA</item>
+        <item>A50C8011AA</item>
+        <item>A50C8012AA</item>
+        <item>A50C8013AA</item>
+        <item>A50C8014AA</item>
+        <item>A50C8015AA</item>
+        <item>A50C8016AA</item>
+        <item>A50C8017AA</item>
+        <item>A50C801AAA</item>
+        <item>A50C801BAA</item>
+        <item>A50C801CAA</item>
+        <item>A50C801DAA</item>
+        <item>A50C801EAA</item>
+        <item>A50C801FAA</item>
+        <item>A50C8020AA</item>
+        <item>A50C8021AA</item>
+        <item>A50C8022AA</item>
+        <item>A50C8023AA</item>
+        <item>A50C8025AA</item>
+        <item>A50C8026AA</item>
+        <item>A50C8027AA</item>
+        <item>A50C8028AA</item>
+        <item>A50C8029AA</item>
+        <item>A50C802AAA</item>
+        <item>A50C802BAA</item>
+        <item>A50C802CAA</item>
+        <item>A50C802DAA</item>
+        <item>A50C802FAA</item>
+        <item>A50C8030AA</item>
+    </string-array>
 </resources>
