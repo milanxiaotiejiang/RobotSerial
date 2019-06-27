@@ -237,8 +237,9 @@ public class SerialPortSettingFragment extends Fragment {
                     Toast.makeText(getActivity(), "当前设备没有串口", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                int devBaudrate = Integer.valueOf(v.getDetailText().toString());
-                int devBaudrateCheckedIndex = Arrays.binarySearch(deviceBaudrateArrays, devBaudrate);
+                String s = v.getDetailText().toString();
+                int devBaudrate = Integer.valueOf(s);
+                int devBaudrateCheckedIndex = Arrays.binarySearch(deviceBaudrateArrays, String.valueOf(devBaudrate));
                 dialogShow(v, deviceBaudrateArrays, devBaudrateCheckedIndex);
                 break;
         }
