@@ -24,6 +24,7 @@ public class SerialControl {
 
     private Context mContext;
     private LocalBroadcastManager mManager;
+    private boolean isContrary;
 
     private static SerialControl singleton;
 
@@ -44,12 +45,14 @@ public class SerialControl {
     public void init(Context context) {
         mContext = context;
         mManager = LocalBroadcastManager.getInstance(mContext);
+        isContrary = SerialPreferences.getDirectionRotation();
     }
 
     public void startManager() {
         if (mContext == null) {
             return;
         }
+        isContrary = SerialPreferences.getDirectionRotation();
         mContext.startService(new Intent(mContext, SerialService.class));
     }
 
@@ -97,6 +100,10 @@ public class SerialControl {
 
     public List<ReceivedListener> getObservers() {
         return mObservers;
+    }
+
+    public boolean isContrary() {
+        return isContrary;
     }
 
     private final List<ReceivedListener> mObservers = new ArrayList<>();

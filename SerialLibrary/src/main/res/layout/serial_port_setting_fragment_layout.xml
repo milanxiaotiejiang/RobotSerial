@@ -4,36 +4,112 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="?attr/qmui_topbar_height"
         android:background="@color/qmui_config_color_background"
         android:fitsSystemWindows="true">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView
                 android:id="@+id/groupListView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
-                android:id="@+id/structure"
-                android:layout_width="120dp"
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center|left"
+                android:text="旋转方向是否默认:"
+                android:textColor="@android:color/holo_blue_dark"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+
+            <com.robot.seabreeze.serial.view.CustomRadioGroup
+                android:id="@+id/rg_preview_angle"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/groupListView"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="30dp"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="构 建" />
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="30dp"
+                android:orientation="vertical">
 
-        </RelativeLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-    </ScrollView>
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
 
+                        <RadioButton
+                            android:id="@+id/open_mirror_btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="false"
+                            android:text="默认"
+                            android:textColor="@android:color/holo_red_light"
+                            android:textSize="17sp"
+                            android:textStyle="bold" />
+                    </RelativeLayout>
+
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="80dp">
+
+                        <RadioButton
+                            android:id="@+id/close_mirror_btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="false"
+                            android:text="相反"
+                            android:textColor="@android:color/holo_red_light"
+                            android:textSize="17sp"
+                            android:textStyle="bold" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </com.robot.seabreeze.serial.view.CustomRadioGroup>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/qmui_divider_bottom_bitmap"
+                android:paddingTop="24dp"
+                android:paddingBottom="24dp">
+
+                <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
+                    android:id="@+id/structure"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:paddingLeft="16dp"
+                    android:paddingTop="10dp"
+                    android:paddingRight="16dp"
+                    android:paddingBottom="10dp"
+                    android:text="构 建"
+                    app:qmui_isRadiusAdjustBounds="true" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+    <com.qmuiteam.qmui.widget.QMUITopBarLayout
+        android:id="@+id/topbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true" />
 
 </com.qmuiteam.qmui.widget.QMUIWindowInsetLayout>

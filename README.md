@@ -7,6 +7,9 @@
 	}
 
 ## 初始化
+
+    QMUISwipeBackActivityManager.init(this);
+
     自定义Application中启动默认参数
 	SerialControl.getInstance().init(this);
 
@@ -15,17 +18,16 @@
 #### 设置页面
     <activity
                 android:name=".SettingActivity"
-                android:theme="@style/Serial.Compat" />
+                android:theme="@style/Serial.NoActionBar.AppTheme" />
 
-    <FrameLayout
-            android:id="@+id/fragment_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+    继承 QMUIFragmentActivity
 
+    SerialPortSettingFragment fragment = SerialPortSettingFragment.newInstance();
     getSupportFragmentManager()
-                    .beginTransaction()
-                    .add(R.id.fragment_container, new SerialPortSettingFragment())
-                    .commit();
+              .beginTransaction()
+              .add(getContextViewId(), fragment, fragment.getClass().getSimpleName())
+              .addToBackStack(fragment.getClass().getSimpleName())
+              .commit();
 
 ###
 #### 使用页面

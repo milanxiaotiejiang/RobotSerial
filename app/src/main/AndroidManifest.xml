@@ -22,7 +22,7 @@
         </activity>
         <activity
             android:name=".SettingActivity"
-            android:theme="@style/Serial.Compat" />
+            android:theme="@style/Serial.NoActionBar.AppTheme" />
     </application>
 
 </manifest>

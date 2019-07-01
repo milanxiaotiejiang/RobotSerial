@@ -23,6 +23,8 @@ public class SerialPreferences {
     private static String PRE_ARECEIVE_VOICE = "PRE_ARECEIVE_VOICE";
     private static String PRE_ARECEIVE_CRUISE = "PRE_ARECEIVE_CRUISE";
 
+    private static String DIRECTION_OF_ROTATION = "DIRECTION_OF_ROTATION";
+
     public static void setActionNamePre(String actionName) {
         PreferencesUtils.putString(SerialControl.getInstance().getContext(), PRE_ACTION_NAME, actionName);
     }
@@ -125,5 +127,13 @@ public class SerialPreferences {
     public static @Format.Receive
     int getReceiveCruisePre() {
         return PreferencesUtils.getInt(SerialControl.getInstance().getContext(), PRE_ARECEIVE_CRUISE, Format.Receive.DEFAULT);
+    }
+
+    public static void setDirectionRotation(boolean isContrary) {
+        PreferencesUtils.putBoolean(SerialControl.getInstance().getContext(), DIRECTION_OF_ROTATION, isContrary);
+    }
+
+    public static boolean getDirectionRotation() {
+        return PreferencesUtils.getBoolean(SerialControl.getInstance().getContext(), DIRECTION_OF_ROTATION, false);
     }
 }

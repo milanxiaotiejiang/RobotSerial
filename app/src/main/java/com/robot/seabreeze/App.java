@@ -2,6 +2,7 @@ package com.robot.seabreeze;
 
 import android.app.Application;
 
+import com.qmuiteam.qmui.arch.QMUISwipeBackActivityManager;
 import com.robot.seabreeze.log.Logger;
 import com.robot.seabreeze.log.inner.FileTree;
 import com.robot.seabreeze.log.inner.LogcatTree;
@@ -30,5 +31,6 @@ public class App extends Application {
         }
 
         SerialControl.getInstance().init(this);
+        QMUISwipeBackActivityManager.init(this);
     }
 }

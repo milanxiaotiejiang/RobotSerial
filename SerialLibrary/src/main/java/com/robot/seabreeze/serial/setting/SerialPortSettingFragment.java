@@ -10,9 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.qmuiteam.qmui.arch.QMUIFragment;
+import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
@@ -20,10 +23,12 @@ import com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton;
 import com.robot.seabreeze.log.Logger;
 import com.robot.seabreeze.serial.Device;
 import com.robot.seabreeze.serial.Format;
+import com.robot.seabreeze.serial.PreferencesUtils;
 import com.robot.seabreeze.serial.R;
 import com.robot.seabreeze.serial.SerialControl;
 import com.robot.seabreeze.serial.SerialPortFinder;
 import com.robot.seabreeze.serial.SerialPreferences;
+import com.robot.seabreeze.serial.view.CustomRadioGroup;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,8 +38,20 @@ import java.util.Arrays;
  * Date: 2019/2/25
  * Description:
  */
-public class SerialPortSettingFragment extends Fragment {
+public class SerialPortSettingFragment extends QMUIFragment {
 
+    public static SerialPortSettingFragment newInstance() {
+        Bundle args = new Bundle();
+        SerialPortSettingFragment fragment = new SerialPortSettingFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    private QMUITopBarLayout mTopbar;
+
+    private CustomRadioGroup rgPreviewAngle;
+    private RadioButton openMirror;
+    private RadioButton closeMirror;
 
     private QMUIGroupListView mGroupListView;
     private QMUIRoundButton mStructure;
@@ -43,10 +60,40 @@ public class SerialPortSettingFragment extends Fragment {
     private String[] deviceBaudrateArrays = {"4800", "9600", "1920", "38400", "57600", "115200", "230400",
             "460800", "500000", "576000", "921600", "1000000", "1152000"};
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.serial_port_setting_fragment_layout, container, false);
+    protected View onCreateView() {
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.serial_port_setting_fragment_layout, null);
+
+        mTopbar = (QMUITopBarLayout) view.findViewById(R.id.topbar);
+        mTopbar.addLeftBackImageButton().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popBackStack();
+            }
+        });
+
+        mTopbar.setTitle("串口设置");
+
+        rgPreviewAngle = view.findViewById(R.id.rg_preview_angle);
+        rgPreviewAngle.setOnCheckedChangeListener(new CustomRadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CustomRadioGroup group, int checkedId) {
+                if (checkedId == R.id.open_mirror_btn) {
+                    SerialPreferences.setDirectionRotation(false);
+                } else if (checkedId == R.id.close_mirror_btn) {
+                    SerialPreferences.setDirectionRotation(true);
+                }
+            }
+        });
+
+        openMirror = view.findViewById(R.id.open_mirror_btn);
+        closeMirror = view.findViewById(R.id.close_mirror_btn);
+        if (SerialControl.getInstance().isContrary()) {
+            closeMirror.setChecked(true);
+        } else {
+            openMirror.setChecked(true);
+        }
+
         this.mStructure = (QMUIRoundButton) view.findViewById(R.id.structure);
         this.mGroupListView = (QMUIGroupListView) view.findViewById(R.id.groupListView);
 
