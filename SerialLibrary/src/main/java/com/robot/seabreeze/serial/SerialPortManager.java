@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
 
+import com.fanfan.serial.SerialPort;
 import com.robot.seabreeze.log.Logger;
 import com.robot.seabreeze.serial.listener.OnOpenSerialPortListener;
 import com.robot.seabreeze.serial.listener.OnSerialPortDataListener;
@@ -74,6 +75,27 @@ public class SerialPortManager extends SerialPort {
             if (null != mOnOpenSerialPortListener) {
                 mOnOpenSerialPortListener.onFail(device, OnOpenSerialPortListener.Status.OPEN_FAIL);
             }
+        }
+        return false;
+    }
+
+    boolean chmod777(File file) {
+        if (null == file || !file.exists()) {
+            // 文件不存在
+            return false;
+        }
+        try {
+            // 获取ROOT权限
+            Process su = Runtime.getRuntime().exec("/system/bin/su");
+            // 修改文件属性为 [可读 可写 可执行]
+            String cmd = "chmod 777 " + file.getAbsolutePath() + "\n" + "exit\n";
+            su.getOutputStream().write(cmd.getBytes());
+            if (0 == su.waitFor() && file.canRead() && file.canWrite() && file.canExecute()) {
+                return true;
+            }
+        } catch (IOException | InterruptedException e) {
+            // 没有ROOT权限
+            e.printStackTrace();
         }
         return false;
     }

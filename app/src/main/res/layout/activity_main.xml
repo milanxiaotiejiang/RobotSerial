@@ -83,7 +83,7 @@
         <EditText
             android:id="@+id/et_voice_received"
             android:layout_width="match_parent"
-            android:layout_height="300dp" />
+            android:layout_height="3000dp" />
 
         <EditText
             android:id="@+id/et_cruise_received"

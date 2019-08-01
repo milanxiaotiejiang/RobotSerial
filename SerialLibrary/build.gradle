@@ -4,26 +4,30 @@ apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
 
     defaultConfig {
         minSdkVersion 19
-        targetSdkVersion 28
-        versionCode 5
-        versionName "1.0.5"
+        targetSdkVersion 29
+        versionCode 6
+        versionName "1.0.6"
 
 //        ndk {
 //            moduleName "serial_port"
 ////            abiFilters "armeabi", "armeabi-v7a", "x86", "x86_64"
 //        }
-        externalNativeBuild {
-            cmake {
-                cppFlags "-frtti -fexceptions -fPIC  "
-            }
-        }
+//        externalNativeBuild {
+//            cmake {
+//                cppFlags "-frtti -fexceptions -fPIC  "
+//            }
+//        }
+
+//        ndk {
+//            abiFilters("armeabi-v7a")
+//        }
 
         ndk {
-            abiFilters("armeabi-v7a")
+            abiFilters 'armeabi-v7a'
         }
 
         javaCompileOptions {
@@ -40,16 +44,22 @@ android {
         }
     }
 
-    sourceSets.main {
-        jni.srcDirs = []
-        jniLibs.srcDir "libs"
-    }
-
-    externalNativeBuild {
-        cmake {
-            path "CMakeLists.txt"
+    sourceSets {
+        main {
+            jni.srcDirs = []
+            jniLibs.srcDirs = ['libs']
         }
     }
+//    sourceSets.main {
+//        jni.srcDirs = []
+//        jniLibs.srcDir "libs"
+//    }
+
+//    externalNativeBuild {
+//        cmake {
+//            path "CMakeLists.txt"
+//        }
+//    }
 
     lintOptions {
         abortOnError false
@@ -58,6 +68,7 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+    //noinspection GradleCompatible
     implementation 'com.android.support:appcompat-v7:28.0.0'
 
     implementation 'com.seabreezerobot:LogLibrary:v1.0.0'
@@ -67,7 +78,7 @@ dependencies {
     //上传编译的文件到bintray，使用如下的命令：
     //gradlew bintrayUpload
     /*library版本*/
-    version = "v1.0.5"
+    version = "v1.0.6"
     /*github上的项目主页以及git仓库地址*/
     def siteUrl = 'https://github.com/milanxiaotiejiang/RobotSerial'
     def gitUrl = 'https://github.com/milanxiaotiejiang/RobotSerial.git'

@@ -15,12 +15,17 @@ import com.robot.seabreeze.serial.SerialControl;
  * Date: 2019/2/25
  * Description:
  */
-public class App extends Application {
+public class NovelApp extends Application {
 
+    private static NovelApp instance;
+
+    public static NovelApp getInstance() {
+        return instance;
+    }
     @Override
     public void onCreate() {
         super.onCreate();
-
+        instance = this;
         if (BuildConfig.DEBUG) {
             Logger.getLogConfig()
                     .configAllowLog(true)

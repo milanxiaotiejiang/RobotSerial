@@ -92,4 +92,14 @@
         <item>A50C802FAA</item>
         <item>A50C8030AA</item>
     </string-array>
+
+
+
+    <string name="right_turn_large_angle">A521821EAA</string>
+    <string name="right_turn_angle">A521823CAA</string>
+    <string name="right_turn_small_angle">A5038004AA</string>
+
+    <string name="lift_turn_large_angle">A5218296AA</string>
+    <string name="lift_turn_angle">A5218278AA</string>
+    <string name="lift_turn_small_angle">A5038006AA</string>
 </resources>

@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.robot.seabreeze.log.Logger;
 import com.robot.seabreeze.serial.HexUtils;
@@ -84,6 +83,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onDestroy();
     }
 
+    private StringBuffer mStringBuffer = new StringBuffer();
+
     ReceiveData receiveData = new ReceiveData() {
         @Override
         public void onActionReceived(String info) {
@@ -101,7 +102,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         public void onVoiceReceived(String info) {
             super.onVoiceReceived(info);
-            etvoicereceived.setText(info);
+            mStringBuffer.append(info + "\n\n\n--------------------------------------------\n\n\n");
+            etvoicereceived.setText(mStringBuffer.toString());
             if (info.contains("WAKE UP!")) {
 
                 String str;
@@ -113,6 +115,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 int angle = Integer.parseInt(str.trim());
 
                 Logger.e("解析到应该旋转的角度 : " + angle);
+
+                if (SerialControl.getInstance().isContrary()) {
+                    if (0 <= angle && angle < 30) {
+                        SerialControl.getInstance().sendActionData(NovelApp.getInstance().getResources().getString(R.string.lift_turn_large_angle));
+                    } else if (30 <= angle && angle <= 60) {
+                        SerialControl.getInstance().sendActionData(NovelApp.getInstance().getResources().getString(R.string.lift_turn_angle));
+                    } else if (120 <= angle && angle <= 150) {
+                        SerialControl.getInstance().sendActionData(NovelApp.getInstance().getResources().getString(R.string.right_turn_angle));
+                    } else if (150 < angle && angle <= 180) {
+                        SerialControl.getInstance().sendActionData(NovelApp.getInstance().getResources().getString(R.string.right_turn_large_angle));
+                    }
+                } else {
+                    if (0 <= angle && angle < 30) {
+                        SerialControl.getInstance().sendActionData(NovelApp.getInstance().getResources().getString(R.string.right_turn_large_angle));
+                    } else if (30 <= angle && angle <= 60) {
+                        SerialControl.getInstance().sendActionData(NovelApp.getInstance().getResources().getString(R.string.right_turn_angle));
+                    } else if (120 <= angle && angle <= 150) {
+                        SerialControl.getInstance().sendActionData(NovelApp.getInstance().getResources().getString(R.string.lift_turn_angle));
+                    } else if (150 < angle && angle <= 180) {
+                        SerialControl.getInstance().sendActionData(NovelApp.getInstance().getResources().getString(R.string.lift_turn_large_angle));
+                    }
+                }
+
+                SerialControl.getInstance().sendVoiceData("BEAM 0\n\r");//0
             }
         }
 
