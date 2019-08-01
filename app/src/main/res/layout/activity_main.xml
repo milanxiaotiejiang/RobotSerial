@@ -82,6 +82,12 @@
             android:text="先停止后移动" />
 
         <EditText
+            android:id="@+id/time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number" />
+
+        <EditText
             android:id="@+id/et_action_received"
             android:layout_width="match_parent"
             android:layout_height="300dp" />

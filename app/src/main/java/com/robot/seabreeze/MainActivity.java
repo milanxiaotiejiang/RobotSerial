@@ -2,6 +2,7 @@ package com.robot.seabreeze;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
@@ -27,8 +28,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private EditText etvoicereceived;
     private EditText etcruisereceived;
     private Button btnStopMove;
+    private EditText etTime;
 
     LinearLayout ll;
+
+    private Handler mHandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.btnaction = (Button) findViewById(R.id.btn_action);
         this.btnSetting = findViewById(R.id.btn_setting);
         this.btnStopMove = findViewById(R.id.btn_stop_move);
+        this.etTime = findViewById(R.id.time);
 
         btnaction.setOnClickListener(this);
         btnvoice.setOnClickListener(this);
@@ -185,8 +190,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(new Intent(MainActivity.this, SettingActivity.class));
                 break;
             case R.id.btn_stop_move:
-                SerialControl.getInstance().sendActionData(NovelApp.getInstance().getResources().getString(R.string.stop_all_action));
-                SerialControl.getInstance().sendActionData(NovelApp.getInstance().getResources().getString(R.string.right_turn_large_angle));
+                String time = etTime.getText().toString();
+                if (TextUtils.isEmpty(time)) {
+                    SerialControl.getInstance().sendActionData(NovelApp.getInstance().getResources().getString(R.string.stop_all_action));
+                    SerialControl.getInstance().sendActionData(NovelApp.getInstance().getResources().getString(R.string.right_turn_large_angle));
+                } else {
+                    int cTime = Integer.valueOf(time);
+                    SerialControl.getInstance().sendActionData(NovelApp.getInstance().getResources().getString(R.string.stop_all_action));
+                    Logger.e("stop");
+                    mHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            SerialControl.getInstance().sendActionData(NovelApp.getInstance().getResources().getString(R.string.right_turn_large_angle));
+                            Logger.e("move");
+                        }
+                    }, cTime);
+                }
                 break;
         }
         String tag = (String) v.getTag();
