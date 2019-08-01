@@ -176,7 +176,7 @@ public class SerialPortSettingFragment extends QMUIFragment {
 
         QMUICommonListItemView voiceReceivedSwitchItem = mGroupListView.createItemView("Hex接受");
         voiceReceivedSwitchItem.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_SWITCH);
-        voiceReceivedSwitchItem.getSwitch().setChecked(SerialPreferences.getDeliveryVoicePre() == Format.Receive.BYTETOHEX);
+        voiceReceivedSwitchItem.getSwitch().setChecked(SerialPreferences.getReceiveVoicePre() == Format.Receive.BYTETOHEX);
         voiceReceivedSwitchItem.getSwitch().setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

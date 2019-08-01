@@ -75,6 +75,12 @@
             android:layout_height="wrap_content"
             android:text="设置" />
 
+        <Button
+            android:id="@+id/btn_stop_move"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="先停止后移动" />
+
         <EditText
             android:id="@+id/et_action_received"
             android:layout_width="match_parent"

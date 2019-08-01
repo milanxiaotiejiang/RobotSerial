@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private EditText etactionreceived;
     private EditText etvoicereceived;
     private EditText etcruisereceived;
+    private Button btnStopMove;
 
     LinearLayout ll;
 
@@ -44,11 +45,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.btnvoice = (Button) findViewById(R.id.btn_voice);
         this.btnaction = (Button) findViewById(R.id.btn_action);
         this.btnSetting = findViewById(R.id.btn_setting);
+        this.btnStopMove = findViewById(R.id.btn_stop_move);
 
         btnaction.setOnClickListener(this);
         btnvoice.setOnClickListener(this);
         btncruise.setOnClickListener(this);
         btnSetting.setOnClickListener(this);
+        btnStopMove.setOnClickListener(this);
         SerialControl.getInstance().startManager();
 
         ll = findViewById(R.id.ll_test);
@@ -105,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mStringBuffer.append(info + "\n\n\n--------------------------------------------\n\n\n");
             etvoicereceived.setText(mStringBuffer.toString());
             if (info.contains("WAKE UP!")) {
-
+                SerialControl.getInstance().sendActionData(NovelApp.getInstance().getResources().getString(R.string.stop_all_action));
                 String str;
                 if (info.contains("score:")) {
                     str = info.substring(info.indexOf("angle:") + 6, info.indexOf("score:"));
@@ -180,6 +183,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.btn_setting:
                 startActivity(new Intent(MainActivity.this, SettingActivity.class));
+                break;
+            case R.id.btn_stop_move:
+                SerialControl.getInstance().sendActionData(NovelApp.getInstance().getResources().getString(R.string.stop_all_action));
+                SerialControl.getInstance().sendActionData(NovelApp.getInstance().getResources().getString(R.string.right_turn_large_angle));
                 break;
         }
         String tag = (String) v.getTag();
