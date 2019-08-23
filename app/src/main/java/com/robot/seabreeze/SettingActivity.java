@@ -1,10 +1,8 @@
 package com.robot.seabreeze;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 
-import com.qmuiteam.qmui.arch.QMUIFragmentActivity;
-import com.robot.seabreeze.serial.SerialControl;
+import com.fanfan.robot.common.arch.QMUIFragmentActivity;
 import com.robot.seabreeze.serial.setting.SerialPortSettingFragment;
 
 /**

@@ -2,12 +2,10 @@ package com.robot.seabreeze;
 
 import android.app.Application;
 
-import com.qmuiteam.qmui.arch.QMUISwipeBackActivityManager;
+import com.fanfan.robot.common.arch.QMUISwipeBackActivityManager;
 import com.robot.seabreeze.log.Logger;
 import com.robot.seabreeze.log.inner.FileTree;
 import com.robot.seabreeze.log.inner.LogcatTree;
-import com.robot.seabreeze.serial.Format;
-import com.robot.seabreeze.serial.SerialConfig;
 import com.robot.seabreeze.serial.SerialControl;
 
 /**

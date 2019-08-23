@@ -9,8 +9,8 @@ android {
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 29
-        versionCode 9
-        versionName "1.0.9"
+        versionCode 10
+        versionName "1.1.0"
 
 //        ndk {
 //            moduleName "serial_port"
@@ -68,17 +68,13 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    //noinspection GradleCompatible
-    implementation 'com.android.support:appcompat-v7:28.0.0'
 
-    implementation 'com.seabreezerobot:LogLibrary:v1.0.0'
-    implementation 'com.qmuiteam:qmui:1.2.0'
-    implementation "com.qmuiteam:arch:0.3.1"
+    implementation 'com.seabreezerobot:BaseLibrary:v1.0.3'
 
     //上传编译的文件到bintray，使用如下的命令：
     //gradlew bintrayUpload
     /*library版本*/
-    version = "v1.0.9"
+    version = "v1.1.0"
     /*github上的项目主页以及git仓库地址*/
     def siteUrl = 'https://github.com/milanxiaotiejiang/RobotSerial'
     def gitUrl = 'https://github.com/milanxiaotiejiang/RobotSerial.git'

@@ -8,7 +8,8 @@ import android.content.IntentFilter;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
-import android.support.v4.content.LocalBroadcastManager;
+
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.robot.seabreeze.log.Logger;
 import com.robot.seabreeze.serial.listener.OnOpenSerialPortListener;
