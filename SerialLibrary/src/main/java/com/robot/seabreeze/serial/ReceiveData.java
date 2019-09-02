@@ -25,6 +25,11 @@ public abstract class ReceiveData implements ReceivedListener {
     }
 
     @Override
+    public void onScanReceived(String info) {
+        Logger.e(info);
+    }
+
+    @Override
     public void onActionReceived(byte[] bytes) {
 
     }
@@ -36,6 +41,11 @@ public abstract class ReceiveData implements ReceivedListener {
 
     @Override
     public void onCruiseReceived(byte[] bytes) {
+
+    }
+
+    @Override
+    public void onScanReceived(byte[] bytes) {
 
     }
 }

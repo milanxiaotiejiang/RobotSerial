@@ -13,6 +13,7 @@ import java.util.List;
 import static com.robot.seabreeze.serial.SerialService.ACTION_ACTION;
 import static com.robot.seabreeze.serial.SerialService.ACTION_CRUISE;
 import static com.robot.seabreeze.serial.SerialService.ACTION_VOICE;
+import static com.robot.seabreeze.serial.SerialService.ACTION_SCAN;
 import static com.robot.seabreeze.serial.SerialService.EXTRA_MOTION;
 
 
@@ -91,6 +92,17 @@ public class SerialControl {
         }
         Intent intent = new Intent();
         intent.setAction(ACTION_CRUISE);
+        intent.putExtra(EXTRA_MOTION, motion);
+        mManager.sendBroadcast(intent);
+    }
+
+    public void sendScanData(String motion) {
+        Utils.isServiceRunning(mContext, SerialService.class.getSimpleName());
+        if (mManager == null) {
+            return;
+        }
+        Intent intent = new Intent();
+        intent.setAction(ACTION_SCAN);
         intent.putExtra(EXTRA_MOTION, motion);
         mManager.sendBroadcast(intent);
     }

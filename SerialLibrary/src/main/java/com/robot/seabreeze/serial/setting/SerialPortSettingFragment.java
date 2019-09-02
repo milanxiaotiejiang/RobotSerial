@@ -122,6 +122,8 @@ public class SerialPortSettingFragment extends QMUIFragment {
     public static final int VOICE_BAUDRATE_ITEM_ID = 4;
     public static final int CRUISE_DEV_ITEM_ID = 5;
     public static final int CRUISE_BAUDRATE_ITEM_ID = 6;
+    public static final int SCAN_DEV_ITEM_ID = 7;
+    public static final int SCAN_BAUDRATE_ITEM_ID = 8;
 
     private void initGroupListView() {
 
@@ -199,13 +201,41 @@ public class SerialPortSettingFragment extends QMUIFragment {
             }
         });
 
-        QMUICommonListItemView cruiseReceivedSwitchItem = mGroupListView.createItemView("Hex发送");
+        QMUICommonListItemView cruiseReceivedSwitchItem = mGroupListView.createItemView("Hex接受");
         cruiseReceivedSwitchItem.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_SWITCH);
         cruiseReceivedSwitchItem.getSwitch().setChecked(SerialPreferences.getReceiveCruisePre() == Format.Receive.BYTETOHEX);
         cruiseReceivedSwitchItem.getSwitch().setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 SerialPreferences.setReceiveCruisePre(isChecked ? Format.Receive.BYTETOHEX : Format.Receive.DEFAULT);
+            }
+        });
+
+        QMUICommonListItemView scanDevItem = createItemView("串口名", SerialPreferences.getScanNamePre());
+        scanDevItem.setTag(SCAN_DEV_ITEM_ID);
+        scanDevItem.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
+
+        QMUICommonListItemView scanBaudrateItem = createItemView("串口号", String.valueOf(SerialPreferences.getScanBaudratePre()));
+        scanBaudrateItem.setTag(SCAN_BAUDRATE_ITEM_ID);
+        scanBaudrateItem.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
+
+        QMUICommonListItemView scanSwitchItem = mGroupListView.createItemView("Hex发送");
+        scanSwitchItem.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_SWITCH);
+        scanSwitchItem.getSwitch().setChecked(SerialPreferences.getDeliveryScanPre() == Format.Delivery.HEXTOBYTE);
+        scanSwitchItem.getSwitch().setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                SerialPreferences.setDeliveryScanPre(isChecked ? Format.Delivery.HEXTOBYTE : Format.Delivery.DEFAULT);
+            }
+        });
+
+        QMUICommonListItemView scanReceivedSwitchItem = mGroupListView.createItemView("Hex接受");
+        scanReceivedSwitchItem.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_SWITCH);
+        scanReceivedSwitchItem.getSwitch().setChecked(SerialPreferences.getReceiveScanPre() == Format.Receive.BYTETOHEX);
+        scanReceivedSwitchItem.getSwitch().setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                SerialPreferences.setReceiveScanPre(isChecked ? Format.Receive.BYTETOHEX : Format.Receive.DEFAULT);
             }
         });
 
@@ -241,6 +271,14 @@ public class SerialPortSettingFragment extends QMUIFragment {
                 .addItemView(cruiseSwitchItem, onClickListener)
                 .addItemView(cruiseReceivedSwitchItem, onClickListener)
                 .addTo(mGroupListView);
+
+        QMUIGroupListView.newSection(getContext())
+                .setTitle("扫描仪设置")
+                .addItemView(scanDevItem, onClickListener)
+                .addItemView(scanBaudrateItem, onClickListener)
+                .addItemView(scanSwitchItem, onClickListener)
+                .addItemView(scanReceivedSwitchItem, onClickListener)
+                .addTo(mGroupListView);
     }
 
     private QMUICommonListItemView createItemView(CharSequence titleText, String detailText) {
@@ -266,6 +304,7 @@ public class SerialPortSettingFragment extends QMUIFragment {
             case ACTION_DEV_ITEM_ID:
             case VOICE_DEV_ITEM_ID:
             case CRUISE_DEV_ITEM_ID:
+            case SCAN_DEV_ITEM_ID:
                 if (deviceNameArrays == null || deviceNameArrays.length == 0) {
                     Toast.makeText(getActivity(), "当前设备没有串口", Toast.LENGTH_SHORT).show();
                     return;
@@ -277,6 +316,7 @@ public class SerialPortSettingFragment extends QMUIFragment {
             case ACTION_BAUDRATE_ITEM_ID:
             case VOICE_BAUDRATE_ITEM_ID:
             case CRUISE_BAUDRATE_ITEM_ID:
+            case SCAN_BAUDRATE_ITEM_ID:
                 if (deviceBaudrateArrays == null || deviceBaudrateArrays.length == 0) {
                     Toast.makeText(getActivity(), "当前设备没有串口", Toast.LENGTH_SHORT).show();
                     return;
@@ -299,13 +339,16 @@ public class SerialPortSettingFragment extends QMUIFragment {
                         String actionNamePre = SerialPreferences.getActionNamePre();
                         String voiceNamePre = SerialPreferences.getVoiceNamePre();
                         String cruiseNamePre = SerialPreferences.getCruiseNamePre();
+                        String scanNamePre = SerialPreferences.getScanNamePre();
 
                         switch ((int) v.getTag()) {
                             case ACTION_DEV_ITEM_ID:
                                 String actionDevName = String.valueOf(arrays[which]);
                                 Logger.e(actionDevName);
 
-                                if (TextUtils.equals(actionDevName, voiceNamePre) || TextUtils.equals(actionDevName, cruiseNamePre)) {
+                                if (TextUtils.equals(actionDevName, voiceNamePre) ||
+                                        TextUtils.equals(actionDevName, cruiseNamePre) ||
+                                        TextUtils.equals(actionDevName, scanNamePre)) {
                                     Toast.makeText(getActivity(), "串口已经被占用", Toast.LENGTH_SHORT).show();
                                     return;
                                 }
@@ -316,7 +359,9 @@ public class SerialPortSettingFragment extends QMUIFragment {
                                 String voiceDevName = String.valueOf(arrays[which]);
                                 Logger.e(voiceDevName);
 
-                                if (TextUtils.equals(voiceDevName, actionNamePre) || TextUtils.equals(voiceDevName, cruiseNamePre)) {
+                                if (TextUtils.equals(voiceDevName, actionNamePre) ||
+                                        TextUtils.equals(voiceDevName, cruiseNamePre) ||
+                                        TextUtils.equals(voiceDevName, scanNamePre)) {
                                     Toast.makeText(getActivity(), "串口已经被占用", Toast.LENGTH_SHORT).show();
                                     return;
                                 }
@@ -327,12 +372,27 @@ public class SerialPortSettingFragment extends QMUIFragment {
                                 String cruiseDevName = String.valueOf(arrays[which]);
                                 Logger.e(cruiseDevName);
 
-                                if (TextUtils.equals(cruiseDevName, actionNamePre) || TextUtils.equals(cruiseDevName, voiceNamePre)) {
+                                if (TextUtils.equals(cruiseDevName, actionNamePre) ||
+                                        TextUtils.equals(cruiseDevName, voiceNamePre) ||
+                                        TextUtils.equals(cruiseDevName, scanNamePre)) {
                                     Toast.makeText(getActivity(), "串口已经被占用", Toast.LENGTH_SHORT).show();
                                     return;
                                 }
                                 v.setDetailText(cruiseDevName);
                                 SerialPreferences.setCruiseNamePre(cruiseDevName);
+                                break;
+                            case SCAN_DEV_ITEM_ID:
+                                String scanDevName = String.valueOf(arrays[which]);
+                                Logger.e(scanDevName);
+
+                                if (TextUtils.equals(scanDevName, actionNamePre) ||
+                                        TextUtils.equals(scanDevName, voiceNamePre) ||
+                                        TextUtils.equals(scanDevName, cruiseNamePre)) {
+                                    Toast.makeText(getActivity(), "串口已经被占用", Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
+                                v.setDetailText(scanDevName);
+                                SerialPreferences.setScanNamePre(scanDevName);
                                 break;
                             case ACTION_BAUDRATE_ITEM_ID:
                                 int actionBaudrate = Integer.valueOf(arrays[which].toString());
@@ -351,6 +411,12 @@ public class SerialPortSettingFragment extends QMUIFragment {
                                 Logger.e(cruiseBaudrate);
                                 v.setDetailText(String.valueOf(cruiseBaudrate));
                                 SerialPreferences.setCruiseBaudratePre(cruiseBaudrate);
+                                break;
+                            case SCAN_BAUDRATE_ITEM_ID:
+                                int scanBaudrate = Integer.valueOf(arrays[which].toString());
+                                Logger.e(scanBaudrate);
+                                v.setDetailText(String.valueOf(scanBaudrate));
+                                SerialPreferences.setScanBaudratePre(scanBaudrate);
                                 break;
                         }
                         dialog.dismiss();

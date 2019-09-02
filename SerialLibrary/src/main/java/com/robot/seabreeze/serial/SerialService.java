@@ -5,9 +5,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
+import android.text.TextUtils;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
@@ -17,6 +19,13 @@ import com.robot.seabreeze.serial.listener.OnSerialPortDataListener;
 import com.robot.seabreeze.serial.listener.ReceivedListener;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import anet.channel.util.StringUtils;
+
+import static com.robot.seabreeze.serial.SerialConfig.DEV;
 
 /**
  * User: milan
@@ -28,6 +37,7 @@ public class SerialService extends Service implements OnOpenSerialPortListener, 
     public static final String ACTION_ACTION = "action_action";
     public static final String ACTION_VOICE = "action_voice";
     public static final String ACTION_CRUISE = "action_cruise";
+    public static final String ACTION_SCAN = "action_scan";
 
     public static final String EXTRA_MOTION = "extra_motion";
 
@@ -47,12 +57,15 @@ public class SerialService extends Service implements OnOpenSerialPortListener, 
                 .configAction(SerialPreferences.getActionNamePre(), SerialPreferences.getActionBaudratePre())
                 .configVoice(SerialPreferences.getVoiceNamePre(), SerialPreferences.getVoiceBaudratePre())
                 .configCruise(SerialPreferences.getCruiseNamePre(), SerialPreferences.getCruiseBaudratePre())
+                .configScan(SerialPreferences.getScanNamePre(), SerialPreferences.getScanBaudratePre())
                 .formatDeliveryAction(SerialPreferences.getDeliveryActionPre())
                 .formatDeliveryVoice(SerialPreferences.getDeliveryVoicePre())
                 .formatDeliveryCruise(SerialPreferences.getDeliveryCruisePre())
+                .formatDeliveryScan(SerialPreferences.getDeliveryScanPre())
                 .formatReceiveAction(SerialPreferences.getReceiveActionPre())
                 .formatReceiveVoice(SerialPreferences.getReceiveVoicePre())
                 .formatReceiveCruise(SerialPreferences.getReceiveCruisePre())
+                .formatReceiveScan(SerialPreferences.getReceiveScanPre())
                 .build();
         mConfig.initManager();
 
@@ -61,6 +74,7 @@ public class SerialService extends Service implements OnOpenSerialPortListener, 
         intentFilter.addAction(ACTION_ACTION);
         intentFilter.addAction(ACTION_VOICE);
         intentFilter.addAction(ACTION_CRUISE);
+        intentFilter.addAction(ACTION_SCAN);
         serialReceiver = new SerialReceiver();
         mManager.registerReceiver(serialReceiver, intentFilter);
 
@@ -71,6 +85,9 @@ public class SerialService extends Service implements OnOpenSerialPortListener, 
                 .setOnOpenSerialPortListener(this)
                 .setOnSerialPortDataListener(this);
         mConfig.getCruiseManager()
+                .setOnOpenSerialPortListener(this)
+                .setOnSerialPortDataListener(this);
+        mConfig.getScanManager()
                 .setOnOpenSerialPortListener(this)
                 .setOnSerialPortDataListener(this);
 
@@ -92,6 +109,9 @@ public class SerialService extends Service implements OnOpenSerialPortListener, 
         }
         if (null != mConfig.getCruiseManager()) {
             mConfig.getCruiseManager().closeSerialPort();
+        }
+        if (null != mConfig.getScanManager()) {
+            mConfig.getScanManager().closeSerialPort();
         }
         mManager.unregisterReceiver(serialReceiver);
     }
@@ -115,16 +135,18 @@ public class SerialService extends Service implements OnOpenSerialPortListener, 
     }
 
     @Override
-    public void onDataReceived(String absolute, final int baudRate, final byte[] bytes) {
+    public void onDataReceived(final String absolute, final int baudRate, final byte[] bytes) {
         mHandler.post(new Runnable() {
             @Override
             public void run() {
-                if (baudRate == mConfig.getActionBaudrate()) {
+                if (TextUtils.equals(absolute, DEV + mConfig.getActionName()) && baudRate == mConfig.getActionBaudrate()) {
                     receivedActionData(bytes);
-                } else if (baudRate == mConfig.getVoiceBaudrate()) {
+                } else if (TextUtils.equals(absolute, DEV + mConfig.getVoiceName()) && baudRate == mConfig.getVoiceBaudrate()) {
                     receivedVoiceData(bytes);
-                } else if (baudRate == mConfig.getCruiseBaudrate()) {
+                } else if (TextUtils.equals(absolute, DEV + mConfig.getCruiseName()) && baudRate == mConfig.getCruiseBaudrate()) {
                     receivedCruiseData(bytes);
+                } else if (TextUtils.equals(absolute, DEV + mConfig.getScanName()) && baudRate == mConfig.getScanBaudrate()) {
+                    receivedScanData(bytes);
                 }
             }
         });
@@ -173,6 +195,56 @@ public class SerialService extends Service implements OnOpenSerialPortListener, 
                 notifyCruiseData(new String(bytes));
                 break;
         }
+    }
+
+    private void receivedScanData(byte[] bytes) {
+        switch (mConfig.getReceiveScan()) {
+            case Format.Receive.BYTETOHEX:
+                String msg = HexUtils.byte2HexStr(bytes);
+                if (!TextUtils.isEmpty(msg) || msg.length() > 10) {
+                    String[] split = msg.split(" ");
+                    String judgeScan = judgeScan(split);
+                    if (!TextUtils.isEmpty(judgeScan)) {
+                        msg = HexUtils.hexStringToString(judgeScan);
+                        notifyScanData(msg);
+                    }
+                }
+                break;
+            case Format.Receive.CUSTOM:
+                notifyScanData(bytes);
+                break;
+            default:
+                notifyScanData(new String(bytes));
+                break;
+        }
+    }
+
+    private String judgeScan(String[] scanArray) {
+        String returnStr = null;
+        if (scanArray.length > 7) {
+            String s0 = scanArray[0];
+            String s1 = scanArray[1];
+            String s2 = scanArray[2];
+            String s3 = scanArray[3];
+            if (TextUtils.equals(s0, "55") && TextUtils.equals(s1, "AA")//标准格式
+                    && TextUtils.equals(s2, "30")//命令字
+                    && TextUtils.equals(s3, "00")//成功
+            ) {
+                List<String> scanList = Arrays.asList(scanArray);
+                List<String> subList = scanList.subList(6, scanList.size() - 1);
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    returnStr = String.join("", subList);
+                } else {
+                    StringBuffer buffer = new StringBuffer();
+                    for (String s : subList) {
+                        buffer.append(s);
+                    }
+                    returnStr = buffer.toString();
+                }
+            }
+        }
+        return returnStr;
     }
 
     @Override
@@ -224,6 +296,22 @@ public class SerialService extends Service implements OnOpenSerialPortListener, 
         synchronized (SerialControl.getInstance().getObservers()) {
             for (ReceivedListener observer : SerialControl.getInstance().getObservers()) {
                 observer.onCruiseReceived(bytes);
+            }
+        }
+    }
+
+    private void notifyScanData(String info) {
+        synchronized (SerialControl.getInstance().getObservers()) {
+            for (ReceivedListener observer : SerialControl.getInstance().getObservers()) {
+                observer.onScanReceived(info);
+            }
+        }
+    }
+
+    private void notifyScanData(byte[] bytes) {
+        synchronized (SerialControl.getInstance().getObservers()) {
+            for (ReceivedListener observer : SerialControl.getInstance().getObservers()) {
+                observer.onScanReceived(bytes);
             }
         }
     }
@@ -282,6 +370,24 @@ public class SerialService extends Service implements OnOpenSerialPortListener, 
         }
     }
 
+    public void sendScanData(String motion) {
+        switch (mConfig.getDeliveryScan()) {
+            case Format.Delivery.HEXTOBYTE:
+                byte[] bOutArray = HexUtils.HexToByteArr(motion);
+                mConfig.getScanManager().sendBytes(bOutArray);
+                break;
+            case Format.Delivery.CUSTOM:
+                if (mConfig.getScanCustomBytes() == null) {
+                    throw new NullPointerException("data is null");
+                }
+                mConfig.getScanManager().sendBytes(mConfig.getScanCustomBytes());
+                break;
+            default:
+                mConfig.getScanManager().sendBytes(motion.getBytes());
+                break;
+        }
+    }
+
     class SerialReceiver extends BroadcastReceiver {
 
         @Override
@@ -296,6 +402,8 @@ public class SerialService extends Service implements OnOpenSerialPortListener, 
                     sendVoiceData(motion);
                 } else if (action.equals(ACTION_CRUISE)) {
                     sendCruiseData(motion);
+                } else if (action.equals(ACTION_SCAN)) {
+                    sendScanData(motion);
                 }
             }
         }

@@ -72,6 +72,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             view.setOnClickListener(this);
             ll.addView(view);
         }
+
+        findViewById(R.id.btn_scan_clear).setOnClickListener(this);
+        findViewById(R.id.btn_start_qr_nfc).setOnClickListener(this);
     }
 
     @Override
@@ -161,6 +164,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             super.onCruiseReceived(info);
             etcruisereceived.setText(info);
         }
+
+        @Override
+        public void onScanReceived(String info) {
+            super.onScanReceived(info);
+        }
     };
 
     @Override
@@ -207,6 +215,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         }
                     }, cTime);
                 }
+                break;
+            case R.id.btn_scan_clear:
+                SerialControl.getInstance().sendScanData("55AA21010000DF");
+                break;
+            case R.id.btn_start_qr_nfc:
+                SerialControl.getInstance().sendScanData("55AA21010009D6");
                 break;
         }
         String tag = (String) v.getTag();

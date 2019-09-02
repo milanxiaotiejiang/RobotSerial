@@ -2,6 +2,8 @@ package com.robot.seabreeze;
 
 import android.app.Application;
 
+import androidx.multidex.MultiDexApplication;
+
 import com.fanfan.robot.common.arch.QMUISwipeBackActivityManager;
 import com.robot.seabreeze.log.Logger;
 import com.robot.seabreeze.log.inner.FileTree;
@@ -13,7 +15,7 @@ import com.robot.seabreeze.serial.SerialControl;
  * Date: 2019/2/25
  * Description:
  */
-public class NovelApp extends Application {
+public class NovelApp extends MultiDexApplication {
 
     private static NovelApp instance;
 

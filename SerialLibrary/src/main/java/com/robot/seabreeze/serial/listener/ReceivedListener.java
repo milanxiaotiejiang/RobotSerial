@@ -25,6 +25,11 @@ public interface ReceivedListener {
         }
 
         @Override
+        public void onScanReceived(String info) {
+            Logger.e(info);
+        }
+
+        @Override
         public void onActionReceived(byte[] bytes) {
 
         }
@@ -38,6 +43,11 @@ public interface ReceivedListener {
         public void onCruiseReceived(byte[] bytes) {
 
         }
+
+        @Override
+        public void onScanReceived(byte[] bytes) {
+
+        }
     };
 
     void onActionReceived(String info);
@@ -46,10 +56,14 @@ public interface ReceivedListener {
 
     void onCruiseReceived(String info);
 
+    void onScanReceived(String info);
+
     void onActionReceived(byte[] bytes);
 
     void onVoiceReceived(byte[] bytes);
 
     void onCruiseReceived(byte[] bytes);
+
+    void onScanReceived(byte[] bytes);
 
 }

@@ -9,6 +9,8 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+        flavorDimensions "1"
         ndk {
              abiFilters  "armeabi-v7a"// ,"armeabi", "x86" //输出指定的三种abi体系下的so库
         }
