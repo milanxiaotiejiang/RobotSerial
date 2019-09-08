@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         findViewById(R.id.btn_scan_clear).setOnClickListener(this);
         findViewById(R.id.btn_start_qr_nfc).setOnClickListener(this);
+        findViewById(R.id.btn_junp_nfc).setOnClickListener(this);
     }
 
     @Override
@@ -221,6 +222,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.btn_start_qr_nfc:
                 SerialControl.getInstance().sendScanData("55AA21010009D6");
+                break;
+            case R.id.btn_junp_nfc:
+                SerialControl.getInstance().sendScanData("55AA2101000FD0");
                 break;
         }
         String tag = (String) v.getTag();

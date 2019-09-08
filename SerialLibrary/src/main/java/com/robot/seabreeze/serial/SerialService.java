@@ -205,8 +205,8 @@ public class SerialService extends Service implements OnOpenSerialPortListener, 
                     String[] split = msg.split(" ");
                     String judgeScan = judgeScan(split);
                     if (!TextUtils.isEmpty(judgeScan)) {
-                        msg = HexUtils.hexStringToString(judgeScan);
-                        notifyScanData(msg);
+
+                        notifyScanData(judgeScan);
                     }
                 }
                 break;
@@ -226,10 +226,13 @@ public class SerialService extends Service implements OnOpenSerialPortListener, 
             String s1 = scanArray[1];
             String s2 = scanArray[2];
             String s3 = scanArray[3];
+            String s4 = scanArray[4];
+            String s5 = scanArray[5];
             if (TextUtils.equals(s0, "55") && TextUtils.equals(s1, "AA")//标准格式
                     && TextUtils.equals(s2, "30")//命令字
                     && TextUtils.equals(s3, "00")//成功
             ) {
+
                 List<String> scanList = Arrays.asList(scanArray);
                 List<String> subList = scanList.subList(6, scanList.size() - 1);
 
@@ -241,6 +244,12 @@ public class SerialService extends Service implements OnOpenSerialPortListener, 
                         buffer.append(s);
                     }
                     returnStr = buffer.toString();
+                }
+
+                if (!TextUtils.equals(s4, "08") || !TextUtils.equals(s5, "00")) {//暂定身份证八位，这里判断不是八位
+                    if (!TextUtils.equals(s4, "04") || !TextUtils.equals(s5, "00")) {//暂定银行卡四位，这里判断不是四位
+                        returnStr = HexUtils.hexStringToString(returnStr);
+                    }
                 }
             }
         }

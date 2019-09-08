@@ -97,6 +97,11 @@
                 android:layout_height="wrap_content"
                 android:text="打开OR、NFC" />
 
+            <Button
+                android:id="@+id/btn_junp_nfc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="支持全部" />
 
         </LinearLayout>
 
