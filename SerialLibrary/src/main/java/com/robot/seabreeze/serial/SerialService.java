@@ -1,5 +1,8 @@
 package com.robot.seabreeze.serial;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -48,9 +51,21 @@ public class SerialService extends Service implements OnOpenSerialPortListener, 
     private LocalBroadcastManager mManager;
     private SerialReceiver serialReceiver;
 
+    public static final String CHANNEL_ID_STRING = "service_01";
+
     @Override
     public void onCreate() {
         super.onCreate();
+        NotificationManager notificationManager = (NotificationManager) SerialControl.getInstance().getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationChannel mChannel;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            mChannel = new NotificationChannel(CHANNEL_ID_STRING, getString(R.string.app_name),
+                    NotificationManager.IMPORTANCE_LOW);
+            notificationManager.createNotificationChannel(mChannel);
+            Notification notification = new Notification.Builder(getApplicationContext(), CHANNEL_ID_STRING).build();
+            startForeground(1, notification);
+        }
+
         SerialConfig.Builder builder = new SerialConfig.Builder();
         mConfig = builder
                 .configContext(this)

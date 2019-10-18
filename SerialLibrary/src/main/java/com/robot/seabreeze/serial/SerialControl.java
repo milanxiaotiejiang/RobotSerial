@@ -2,6 +2,7 @@ package com.robot.seabreeze.serial;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
@@ -55,7 +56,11 @@ public class SerialControl {
             return;
         }
         isContrary = SerialPreferences.getDirectionRotation();
-        mContext.startService(new Intent(mContext, SerialService.class));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            mContext.startForegroundService(new Intent(mContext, SerialService.class));
+        } else {
+            mContext.startService(new Intent(mContext, SerialService.class));
+        }
     }
 
 
